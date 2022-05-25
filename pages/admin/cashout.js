@@ -8,9 +8,9 @@ const Cashout = (props) => {
                 <title>Cashout | Sawerku</title>
             </Head>
             <Navbar title="Cashout & Saldo">
-                <div className="grid grid-cols-1 gap-4 m-auto sm:grid-cols-2 content-center h-screen">
+                <div className="grid grid-cols-1 gap-4 m-auto sm:grid-cols-2 content-center h-screen p-4">
                     <div className="w-full">
-                        <div className="w-3/6 h-full border-4 mx-auto border-black rounded-2xl text-center overflow-hidden">
+                        <div className="w-full md:w-4/6 lg:w-4/6  h-full border-4 mx-auto border-black rounded-2xl text-center overflow-hidden">
                             <div className="block text-center font-patrick text-[24px] border-b-4 text-white font-medium border-black bg-[#FAC76C]">
                                 <div className="text-center">Total Saldo</div>
                             </div>
@@ -20,7 +20,7 @@ const Cashout = (props) => {
                         </div>
                     </div>
                     <div className="w-full">
-                        <div className="w-3/6 h-full border-4 mx-auto border-black rounded-2xl text-center overflow-hidden">
+                        <div className="w-full md:w-4/6 lg:w-4/6  h-full border-4 mx-auto border-black rounded-2xl text-center overflow-hidden">
                             <div className="block text-center font-patrick text-[24px] border-b-4 text-white font-medium border-black bg-[#B2E0E6]">
                                 <div className="text-center">Siap Dicairkan</div>
                             </div>

@@ -185,26 +185,14 @@ class Subathon extends React.Component {
                   placeholder="#FFFFFF"
                 />
               </div>
-              <div className="w-full text-left">
-                <label className="text-left font-zillaSlabLight">
-                  Ketebalan Teks:
-                </label>
-                <input
-                  className="w-full py-2 block border-b-[1px] border-black focus:outline-none"
-                  type="number"
-                  name="fontweight"
-                  value={this.state.fontweight}
-                  onChange={this.handleInputChange}
-                  placeholder="400"
-                />
-              </div>
+             
             </div>
 
             <div
               style={{
                 backgroundColor: "#"+this.state.bgcolor,
               }}
-              className={`border-[3px] m-4 border-black rounded-md w-4/6 mx-auto p-6 text-center text-3xl font-medium`}
+              className={`border-[3px] m-4 sm:hidden border-black rounded-md w-4/6 mx-auto p-6 text-center text-3xl font-medium`}
             >
               <span
                 className="block mb-2 text-[10vw] p-10"
@@ -245,7 +233,7 @@ class Subathon extends React.Component {
               type="text"
               className="w-full py-2  border-b-[1px] font-zillaSlabLight border-black focus:outline-none"
               disabled
-              value={"http://localhost:3000/modules/subathon?key=" + this.props.keys + "&jamawal=" + this.state.jamawal + "&menitawal=" + this.state.menitawal + "&detikawal=" + this.state.detikawal + "&bgcolor=" + this.state.bgcolor + "&txtcolor=" + this.state.txtcolor + "&fontweight=" + this.state.fontweight}
+              value={"https://sawerku.irfans.me/modules/subathon?key=" + this.props.keys + "&jamawal=" + this.state.jamawal + "&menitawal=" + this.state.menitawal + "&detikawal=" + this.state.detikawal + "&bgcolor=" + this.state.bgcolor + "&txtcolor=" + this.state.txtcolor + "&fontweight=" + this.state.fontweight}
             />
           </div>
           <div className="w-full px-4 text-left block mb-4">

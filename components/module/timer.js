@@ -2,9 +2,9 @@ import { useState, useEffect } from "react"
 
 const TimerModule = (props) => {
     const [time, setTime] = useState({
-        hour: 10,
-        minute: 0,
-        second: 0,
+        hour: props.data.hour,
+        minute: props.data.minute,
+        second: props.data.second,
 
     });
     const [isStart, setIsStart] = useState(false);

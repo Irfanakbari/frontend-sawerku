@@ -13,6 +13,7 @@ const Login = () => {
       password: e.target.password.value,
     }).then((res) => {
       if (res.status === "failed") {
+        setLoading(false);
         alert(res.message);
       } else {
         setCookies("credentials", res);
@@ -20,7 +21,6 @@ const Login = () => {
       }
     });
   };
-
   const postAPI = async (url, data) => {
     const response = await fetch(url, {
       method: "POST",
@@ -31,6 +31,7 @@ const Login = () => {
     });
     return response.json();
   };
+
   return (
     <>
       <Head>

@@ -16,7 +16,7 @@ const Overlay = (props) => {
         <title>Overlay | Sawerku</title>
       </Head>
       <Navbar title="Overlay">
-        <div className="mt-5 mb-5 p-4 container block w-full">
+        <div className="mt-5 mb-5 p-4  w-full">
           <div className="justify-center grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4  gap-3 ">
             <div
               onClick={() => changeMenu(0)}
@@ -68,14 +68,16 @@ const Overlay = (props) => {
             </div>
           </div>
           <br />
-          {getCurrentMenu === 0 ? (
+         
+        </div>
+        {getCurrentMenu === 0 ? (
             <ALert keys={props.streamkey} />
           ) : getCurrentMenu === 1 ? (
             <Subathon keys={props.streamkey} />
           ) : (
             <div></div>
           )}
-        </div>
+          <br/>
       </Navbar>
     </>
   );

@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import { useState, useEffect } from 'react'
 import { Router } from 'next/router';
 import { SpinnerDotted } from 'spinners-react';
+import App from 'next/app';
 
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,13 @@ function MyApp({ Component, pageProps }) {
     }
     </>
   )
+}
+
+MyApp.getInitialProps = async (appContext) => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext);
+
+  return { ...appProps }
 }
 
 export default MyApp

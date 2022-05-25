@@ -28,7 +28,6 @@ const Admin = (props) => {
             </div>
           </div>
           <div className="grid grid-cols-1 gap-4 m-7 sm:grid-cols-2">
-            
             <Menu
               title="Overlay"
               desc="Atur Alert dan overlay lainnya di sini. Kompatibel dengan OBS dan Streamlabs."
