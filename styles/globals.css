@@ -1,3 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family : "Patrick Hand";
+  src : url("/fonts/PatrickHandSC-Regular.ttf");
+}
+@font-face {
+  font-family : "Zilla Slab";
+  src : url("/fonts/ZillaSlab-Bold.ttf");
+}
+@font-face {
+  font-family : "Zilla Slab SemiBold";
+  src : url("/fonts/ZillaSlab-SemiBold.ttf");
+}
+@font-face {
+  font-family : "Zilla Slab Medium";
+  src : url("/fonts/ZillaSlab-Medium.ttf");
+}
+@font-face {
+  font-family : "Zilla Slab Light";
+  src : url("/fonts/ZillaSlab-Light.ttf");
+}
+
 html,
 body {
   padding: 0;
