@@ -1,32 +1,37 @@
-import { io } from "socket.io-client";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-let socket;
+import { io } from "socket.io-client";
 
 export default function AlertModule() {
-  const { key, bgcolor, hgcolor, txtcolor, template, durasinotif } = useRouter().query;
-  var queue = [];
-  function immutablePush(newEntry) {
-    return queue.push(newEntry);
-  }
+  const { key, bgcolor, hgcolor, txtcolor, template, durasinotif } =
+    useRouter().query;
+
+  const socket = io("https://backend-sawerku.herokuapp.com/")
+
 
   useEffect(() => {
-    socket = io("https://backend-sawerku.herokuapp.com/");
-    socket.on(
-      "alert" + key,
-      async (data) => {
-        console.log(data);
-      },
-      []
-    );
-  });
+    const handleSocket = (dan) => {
+      document.getElementById("body").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("body").style.display = "none";
+      }, durasinotif);
+    }
+    socket.on("alert" + key, (data) => handleSocket(data))
+
+    return () => {
+      socket.off("alert" + key)
+    }
+  }, [socket, key, durasinotif])
 
 
   return (
     <>
-      <div className="body" style={{
-        display: "none",
-      }}>
+      <div
+        id="body"
+        style={{
+          display: "none",
+        }}
+      >
         <div
           style={{
             backgroundColor: "#" + bgcolor,

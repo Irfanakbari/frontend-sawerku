@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { toast, ToastContainer } from 'react-toastify';
+
 
 class ALert extends React.Component {
   constructor(props) {
@@ -38,17 +40,33 @@ class ALert extends React.Component {
   clipBoardHandler = () => {
     const url = document.getElementById("url").value;
     navigator.clipboard.writeText(url);
-    alert("Copied to clipboard");
+    toast.success("Berhasil Menyalin ke ClipBoard", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
   };
 
   render() {
     const handleSubmit = (event) => {
       event.preventDefault();
       localStorage.setItem("alert", JSON.stringify(this.state));
-      alert("alert berhasil disimpan");
+      toast.success("Berhasil Menyimpan Konfigurasi", {
+        position: "top-right",
+        autoClose: 2000,
+        theme: "colored",
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     };
     return (
       <>
+        <ToastContainer />
         <div className="w-11/12 mx-auto mt-5 border-2 border-black rounded-xl overflow-hidden">
           <div className="w-full bg-red-400 p-1 border-b-2 font-patrick text-3xl border-black text-white text-center">
             Alert
@@ -109,7 +127,7 @@ class ALert extends React.Component {
                   className="w-full h-8 block border-b-[1px] border-black focus:outline-none"
                   type="color"
                   name="bgcolor"
-                  value={"#"+this.state.bgcolor}
+                  value={"#" + this.state.bgcolor}
                   onChange={this.handleInputChange}
                   placeholder="#8a90b6"
                 />
@@ -122,7 +140,7 @@ class ALert extends React.Component {
                   className="w-full h-8 block border-b-[1px] border-black focus:outline-none"
                   type="color"
                   name="hgcolor"
-                  value={"#"+this.state.hgcolor}
+                  value={"#" + this.state.hgcolor}
                   onChange={this.handleInputChange}
                   placeholder="#744FC9"
                 />
@@ -135,7 +153,7 @@ class ALert extends React.Component {
                   className="w-full h-8 block border-b-[1px] border-black focus:outline-none"
                   type="color"
                   name="txtcolor"
-                  value={"#"+this.state.txtcolor}
+                  value={"#" + this.state.txtcolor}
                   onChange={this.handleInputChange}
                   placeholder="#FFFFFF"
                 />
@@ -184,28 +202,28 @@ class ALert extends React.Component {
 
             <div
               style={{
-                backgroundColor: "#"+this.state.bgcolor,
+                backgroundColor: "#" + this.state.bgcolor,
               }}
               className={`border-[3px] m-4 border-black rounded-md p-6 text-center text-3xl font-medium`}
             >
               <span className="block mb-2">
                 <span
                   style={{
-                    color: "#"+this.state.hgcolor,
+                    color: "#" + this.state.hgcolor,
                   }}
                 >
                   Mumu
                 </span>{" "}
                 <span
                   style={{
-                    color: "#"+this.state.txtcolor,
+                    color: "#" + this.state.txtcolor,
                   }}
                 >
                   {this.state.template}
                 </span>{" "}
                 <span
                   style={{
-                    color: "#"+this.state.hgcolor,
+                    color: "#" + this.state.hgcolor,
                   }}
                 >
                   Rp 10.000
@@ -213,7 +231,7 @@ class ALert extends React.Component {
               </span>
               <span
                 style={{
-                  color: "#"+this.state.txtcolor,
+                  color: "#" + this.state.txtcolor,
                 }}
               >
                 Semangat Ya !!!

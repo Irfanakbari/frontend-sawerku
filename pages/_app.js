@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { Router } from 'next/router';
 import { SpinnerDotted } from 'spinners-react';
 import App from 'next/app';
+import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps }) {
   const [loading, setLoading] = useState(false);

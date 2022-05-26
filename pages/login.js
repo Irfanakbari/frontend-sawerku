@@ -2,6 +2,8 @@ import Head from "next/head";
 import Router from "next/router";
 import { useState } from "react";
 import { setCookies, getCookie } from "cookies-next";
+import { toast,ToastContainer } from 'react-toastify';
+
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -14,8 +16,25 @@ const Login = () => {
     }).then((res) => {
       if (res.status === "failed") {
         setLoading(false);
-        alert(res.message);
+        toast.error(res.message, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "colored",
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       } else {
+        toast.success(res.message, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "colored",
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
         setCookies("credentials", res);
         Router.push("/admin");
       }
@@ -37,6 +56,7 @@ const Login = () => {
       <Head>
         <title>Login | Sawerku</title>
       </Head>
+      <ToastContainer />
       <div className="flex items-center justify-center h-screen">
         <div className="container lg:w-2/5 sm:w-3/6 border-4 border-black mt-5 rounded-lg text-center mx-5 overflow-hidden">
           <div className="flex flex-col font-patrick text-2xl items-center justify-center border-b-4 p-2 text-white font-semibold border-black bg-[#BB6BD9]">

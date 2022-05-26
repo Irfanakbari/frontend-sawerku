@@ -192,7 +192,8 @@ class Subathon extends React.Component {
               style={{
                 backgroundColor: "#"+this.state.bgcolor,
               }}
-              className={`border-[3px] m-4 sm:hidden border-black rounded-md w-4/6 mx-auto p-6 text-center text-3xl font-medium`}
+              className={`border-[3px] m-4 md:block lg:block border-black rounded-md w-4/6 mx-auto p-6 text-center text-3xl font-medium
+              hidden`}
             >
               <span
                 className="block mb-2 text-[10vw] p-10"
