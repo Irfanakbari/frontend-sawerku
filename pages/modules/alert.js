@@ -1,32 +1,46 @@
-import { io } from "socket.io-client";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-let socket;
+import { io } from "socket.io-client";
+import Head from "next/head";
 
 export default function AlertModule() {
-  const { key, bgcolor, hgcolor, txtcolor, template, durasinotif } = useRouter().query;
-  var queue = [];
-  function immutablePush(newEntry) {
-    return queue.push(newEntry);
-  }
+  const { key, bgcolor, hgcolor, txtcolor, template, durasinotif, mindonasi } =
+    useRouter().query;
+
+  const socket = io("https://backend-sawerku.herokuapp.com/")
+
 
   useEffect(() => {
-    socket = io("https://backend-sawerku.herokuapp.com/");
-    socket.on(
-      "alert" + key,
-      async (data) => {
-        console.log(data);
-      },
-      []
-    );
-  });
+    const handleSocket = (dan) => {
+      if (dan.gross >= mindonasi) {
+        document.getElementById("body").style.display = "block";
+        document.getElementsByClassName("sender")[0].innerHTML = dan.dari;
+        document.getElementsByClassName("gross")[0].innerHTML = dan.gross;
+        document.getElementsByClassName("pesan")[0].innerHTML = dan.pesan;
+        setTimeout(() => {
+          document.getElementById("body").style.display = "none";
+        }, durasinotif);
+      }
+    }
+    socket.on("alert" + key, (data) => handleSocket(data))
+
+    return () => {
+      socket.off("alert" + key)
+    }
+  }, [socket, key, durasinotif,mindonasi])
 
 
   return (
     <>
-      <div className="body" style={{
-        display: "none",
-      }}>
+    <Head>
+      <title>Sawerku | Alert Module</title>
+    </Head>
+      <div
+        id="body"
+        style={{
+          display: "none",
+        }}
+      >
         <div
           style={{
             backgroundColor: "#" + bgcolor,
@@ -37,7 +51,7 @@ export default function AlertModule() {
             <span
               style={{
                 color: "#" + hgcolor,
-              }}
+              }} className="sender"
             >
               Mumu
             </span>{" "}
@@ -51,7 +65,7 @@ export default function AlertModule() {
             <span
               style={{
                 color: "#" + hgcolor,
-              }}
+              }} className="gross"
             >
               Rp 10.000
             </span>
@@ -59,7 +73,7 @@ export default function AlertModule() {
           <span
             style={{
               color: "#" + txtcolor,
-            }}
+            }} className="pesan"
           >
             Semangat Ya !!!
           </span>

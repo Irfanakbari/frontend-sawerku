@@ -1,7 +1,8 @@
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import Menu from "../../components/adminmenu";
-import { removeCookies } from "cookies-next";
+import { removeCookies,getCookie } from "cookies-next";
+
 
 const Admin = (props) => {
   const router = useRouter();
@@ -68,7 +69,7 @@ export async function getServerSideProps({ req,res }) {
     'Cache-Control',
     'public, s-maxage=10, stale-while-revalidate=59'
   )
-  const { credentials } = req.cookies;
+  const credentials  = getCookie("credentials", { req, res });
   const token = JSON.parse(credentials).data.token;
   const respon = await fetch("https://backend-sawerku.herokuapp.com/api/users", {
     method: "GET",
@@ -77,6 +78,7 @@ export async function getServerSideProps({ req,res }) {
     },
   });
   if (respon.statusText !== "OK") {
+    removeCookies("credentials", { req, res });
     return {
       redirect: {
         destination: "/login",
