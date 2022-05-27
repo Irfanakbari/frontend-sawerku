@@ -8,6 +8,7 @@ const TimerModule = (props) => {
 
     });
     const [isStart, setIsStart] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
 
     useEffect(() => {
         let inteval;
@@ -38,6 +39,20 @@ const TimerModule = (props) => {
         return () => clearInterval(inteval);
     }, [time, isStart]);
 
+    const submitEdit = (e) => {
+        e.preventDefault();
+        var jam = document.getElementById("jam").value;
+        var menit = document.getElementById("menit").value;
+        var detik = document.getElementById("detik").value;
+        setTime({
+            hour: parseInt(time.hour) + parseInt(jam),
+            minute: parseInt(time.minute) + parseInt(menit),
+            second: parseInt(time.second) + parseInt(detik),
+        });
+        setIsEdit(false);
+    };
+
+
     return (
         <>
             <div
@@ -65,14 +80,40 @@ const TimerModule = (props) => {
                     }</span>
                 </span>
             </div>
-            <button
-                className="m-4 float-right text-center block w-full"
-                onClick={() => setIsStart(!isStart)}
-            >
-                {
-                    isStart ? "Stop" : "Start"
-                }
-            </button>
+            <div className="w-full justify-center flex">
+                <button
+                    className="m-4 text-center "
+                    onClick={() => setIsStart(!isStart)}
+                >
+                    {
+                        isStart ? "Stop" : "Start"
+                    }
+                </button>
+                <button
+                    className="m-4 text-center"
+                    onClick={() => setIsEdit(!isEdit)}
+                >
+                    {
+                        isEdit ? "Close" : "Edit"
+                    }
+                </button>
+            </div>
+            {
+                isEdit ? (<div className="w-full justify-center flex">
+                    <form onSubmit={submitEdit}>
+                        <label className="m-4 text-center"> Jam
+                            <input type="number" id="jam" className="m-4 text-center border-black border-2" defaultValue={0} />
+                        </label>
+                        <label className="m-4 text-center"> Menit
+                            <input type="number" id="menit" className="m-4 text-center border-black border-2" defaultValue={0}  />
+                        </label>
+                        <label className="m-4 text-center"> Detik
+                            <input type="number" id="detik" className="m-4 text-center border-black border-2" defaultValue={0} />
+                        </label>
+                        <button type="submit" className="block p-2 text-center m-auto rounded px-5 bg-orange-400">Save</button>
+                    </form>
+                </div>) : null
+            }
         </>
     )
 }

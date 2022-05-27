@@ -2,7 +2,7 @@ import Navbar from "../../components/navbar";
 import Head from "next/head";
 import React, { useState } from "react";
 import ALert from "../../components/alert";
-import Subathon from "../../components/subathon";
+import Subathon from "../../components/subathon/subathon";
 
 const Overlay = (props) => {
   const [getCurrentMenu, setCurrentMenu] = useState(0);

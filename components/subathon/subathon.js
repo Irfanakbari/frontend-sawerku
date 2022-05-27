@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import TabelWaktu from "./tabel";
 
 class Subathon extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class Subathon extends React.Component {
       bgcolor: "8a90b6",
       txtcolor: "FFFFFF",
       fontweight: "400",
+      waktu: []
     };
     this.handleInputChange = this.handleInputChange.bind(this);
   }
@@ -23,6 +25,7 @@ class Subathon extends React.Component {
       [name]: value,
     });
   }
+
 
   componentDidMount() {
     const data = localStorage.getItem("subathon");
@@ -81,42 +84,12 @@ class Subathon extends React.Component {
                   </th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td className="w-auto text-left">
-                    <input
-                      className="py-2 border-b-[1px] border-black focus:outline-none"
-                      type="number"
-                      name="mindonasi"
-                      placeholder="10000"
-                    />
-                    <span className="text-2xl font-zillaSlabBold m-4">=</span>
-                  </td>
-                  <td className="w-auto text-left">
-                    <input
-                      className=" py-2 block border-b-[1px] border-black focus:outline-none"
-                      type="number"
-                      name="mindonasi"
-                      placeholder="10000"
-                    />
-                  </td>
-                  <td className="w-auto text-left">
-                    <input
-                      className=" py-2 block border-b-[1px] border-black focus:outline-none"
-                      type="number"
-                      name="mindonasi"
-                      placeholder="10000"
-                    />
-                  </td>
-                  <td className="w-auto text-left">
-                    <input
-                      className=" py-2 block border-b-[1px] border-black focus:outline-none"
-                      type="number"
-                      name="mindonasi"
-                      placeholder="10000"
-                    />
-                  </td>
-                </tr>
+              <tbody id="maindata">
+                <TabelWaktu />
+                <TabelWaktu />
+                <TabelWaktu />
+                <TabelWaktu />
+                <TabelWaktu />
               </tbody>
             </table>
             <div className="grid grid-cols-3 gap-4 w-full px-4 text-left mt-3 mb-3">
@@ -167,7 +140,7 @@ class Subathon extends React.Component {
                   className="w-full h-8 block border-b-[1px] border-black focus:outline-none"
                   type="color"
                   name="bgcolor"
-                  value={"#"+this.state.bgcolor}
+                  value={"#" + this.state.bgcolor}
                   onChange={this.handleInputChange}
                   placeholder="#8a90b6"
                 />
@@ -180,17 +153,17 @@ class Subathon extends React.Component {
                   className="w-full h-8 block border-b-[1px] border-black focus:outline-none"
                   type="color"
                   name="txtcolor"
-                  value={"#"+this.state.txtcolor}
+                  value={"#" + this.state.txtcolor}
                   onChange={this.handleInputChange}
                   placeholder="#FFFFFF"
                 />
               </div>
-             
+
             </div>
 
             <div
               style={{
-                backgroundColor: "#"+this.state.bgcolor,
+                backgroundColor: "#" + this.state.bgcolor,
               }}
               className={`border-[3px] m-4 md:block lg:block border-black rounded-md w-4/6 mx-auto p-6 text-center text-3xl font-medium
               hidden`}
@@ -198,7 +171,7 @@ class Subathon extends React.Component {
               <span
                 className="block mb-2 text-[10vw] p-10"
                 style={{
-                  color: "#"+this.state.txtcolor,
+                  color: "#" + this.state.txtcolor,
                 }}
               >
                 <span className="m-3">

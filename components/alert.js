@@ -30,6 +30,23 @@ class ALert extends React.Component {
     });
   }
 
+   testAlert = async () => {
+    await fetch("https://backend-sawerku.herokuapp.com/api/tes/alert", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        dari: "admin",
+        gross: this.state.mindonasi,
+        pesan: "Semangat Ya",
+        streamKey: this.props.keys
+      }),
+    }).then((res) => {
+      console.log(res.json());
+    });
+  }
+
   componentDidMount() {
     const data = localStorage.getItem("alert");
     if (data) {
@@ -277,6 +294,12 @@ class ALert extends React.Component {
               className="border-[3px] rounded-xl border-black bg-blue-400 py-2 px-5 hover:cursor-pointer hover:bg-blue-600 text-xl font-semibold font-patrick text-white"
             >
               Copy to Clipboard
+            </button>
+            <button
+              onClick={this.testAlert}
+              className="border-[3px] rounded-xl ml-3 border-black bg-[orange] py-2 px-5 hover:cursor-pointer hover:bg-[#ae853a] text-xl font-semibold font-patrick text-white"
+            >
+              Kirim Alert Test
             </button>
           </div>
         </div>

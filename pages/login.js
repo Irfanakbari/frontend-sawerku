@@ -73,6 +73,7 @@ const Login = () => {
                 <input
                   type="email"
                   name="email"
+                  required
                   placeholder="emailku@pribadi.com"
                   className="py-2 w-full block border-b-2 placeholder:text-[#CCD5DD] placeholder:font-medium placeholder:text-md focus:outline-none invalid:text-[red] invalid:border-[red]"
                 ></input>
@@ -85,6 +86,7 @@ const Login = () => {
                 <input
                   name="password"
                   type="password"
+                  required
                   placeholder="********"
                   className="py-2 w-full block border-b-2 placeholder:text-[#CCD5DD] placeholder:font-medium placeholder:text-md focus:outline-none invalid:text-[red] invalid:border-[red]"
                 ></input>
