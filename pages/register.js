@@ -74,10 +74,11 @@ const Register = () => {
                                     className="py-2 w-full block border-b-2 placeholder:text-[#CCD5DD] placeholder:font-medium placeholder:text-md focus:outline-none invalid:text-[red] invalid:border-[red]"
                                 ></input>
                             </label>
+                            
                             <br />
-                          
+
                             <p className="mt-2 text-left mb-5">
-                                Anda harus berusia 17 tahun ke atas untuk bergabung bersama saweria.co dan dengan mendaftarkan diri, anda telah menyetujui syarat dan ketentuan.
+                                Anda harus berusia 17 tahun ke atas untuk bergabung bersama sawerku dan dengan mendaftarkan diri, anda telah menyetujui syarat dan ketentuan.
                             </p>
                             <button className="bg-[#55A9B4] hover:bg-[#196b76] border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline">
                                 {

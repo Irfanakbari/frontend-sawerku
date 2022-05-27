@@ -90,7 +90,7 @@ const Login = (props) => {
                 <title>Register | Sawerku</title>
             </Head>
             <ToastContainer />
-            <div className="flex items-center justify-center h-screen mt-10 mb-10">
+            <div className="flex items-center justify-center mt-10 mb-10">
                 <div className="container lg:w-2/5 sm:w-3/6 border-4 border-black mt-5 rounded-lg text-center mx-5 overflow-hidden">
                     <div className="flex flex-col font-patrick text-2xl items-center justify-center border-b-4 p-2 text-white font-semibold border-black bg-[#BB6BD9]">
                         SAWERKU
