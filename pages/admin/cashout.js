@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Navbar from "../../components/navbar";
 import DataTable from 'react-data-table-component';
+import { getCookie,removeCookies } from 'cookies-next';
 
 const Cashout = (props) => {
     const columns = [
@@ -80,8 +81,8 @@ const Cashout = (props) => {
     )
 }
 
-export async function getServerSideProps({ req }) {
-    const { credentials } = req.cookies;
+export async function getServerSideProps({ req,res }) {
+    const credentials = getCookie("credentials",{req,res});
     const token = JSON.parse(credentials).data.token;
     const respon = await fetch("https://backend-sawerku.herokuapp.com/api/saldo", {
         method: "GET",
@@ -90,6 +91,7 @@ export async function getServerSideProps({ req }) {
         },
     });
     if (respon.statusText !== "OK") {
+        removeCookies("credentials",{req,res});
         return {
             redirect: {
                 destination: "/login",

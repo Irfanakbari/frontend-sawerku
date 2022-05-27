@@ -3,6 +3,7 @@ import Head from "next/head";
 import React, { useState } from "react";
 import ALert from "../../components/alert";
 import Subathon from "../../components/subathon/subathon";
+import { removeCookies } from "cookies-next";
 
 const Overlay = (props) => {
   const [getCurrentMenu, setCurrentMenu] = useState(0);
@@ -97,6 +98,7 @@ export async function getServerSideProps({ req, res }) {
     },
   });
   if (respon.statusText !== "OK") {
+    removeCookies("credentials", { req, res });
     return {
       redirect: {
         destination: "/login",

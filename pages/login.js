@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Router from "next/router";
 import { useState } from "react";
-import { setCookies, getCookie } from "cookies-next";
+import { setCookies, checkCookies } from "cookies-next";
 import { toast,ToastContainer } from 'react-toastify';
 
 
@@ -107,7 +107,7 @@ const Login = () => {
 
 
 export async function getServerSideProps({ req, res }) {
-  const cooki = getCookie('credentials', { req, res });
+  const cooki = checkCookies("credentials", { req, res });
   if (cooki) {
     return {
       redirect: {
