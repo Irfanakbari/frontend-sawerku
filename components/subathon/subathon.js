@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import TabelWaktu from "./tabel";
+import { toast, ToastContainer } from "react-toastify";
+
 
 class Subathon extends React.Component {
   constructor(props) {
@@ -37,16 +39,27 @@ class Subathon extends React.Component {
   clipBoardHandler = () => {
     const url = document.getElementById("url").value;
     navigator.clipboard.writeText(url);
+    toast.success("URL berhasil disalin")
   };
 
   render() {
     const handleSubmit = (event) => {
       event.preventDefault();
       localStorage.setItem("subathon", JSON.stringify(this.state));
-      alert("alert berhasil disimpan");
+      toast.success("QR Code berhasil disimpan", {
+        position: "top-right",
+        autoClose: 5000,
+        theme: "colored",
+      });
+    };
+    const newTabHandler = () => {
+      const url = document.getElementById("url").value;
+      window.open(url, "_blank");
     };
     return (
       <>
+        <ToastContainer />
+
         <div className="w-11/12 mx-auto mt-5 border-2 border-black rounded-xl overflow-hidden">
           <div className="w-full bg-red-400 p-1 border-b-2 font-patrick text-3xl border-black text-white text-center">
             Subathon
@@ -216,6 +229,9 @@ class Subathon extends React.Component {
               className="border-[3px] rounded-xl border-black bg-blue-400 py-2 px-5 hover:cursor-pointer hover:bg-blue-600 text-xl font-semibold font-patrick text-white"
             >
               Copy to Clipboard
+            </button>
+            <button onClick={newTabHandler} className="border-[3px] ml-3 rounded-xl border-black bg-yellow-400 py-2 px-5 hover:cursor-pointer hover:bg-yellow-600 text-xl font-semibold font-patrick text-white">
+              Open in New Tab
             </button>
           </div>
         </div>
