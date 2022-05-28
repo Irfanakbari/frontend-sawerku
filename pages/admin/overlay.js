@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ALert from "../../components/alert";
 import Subathon from "../../components/subathon/subathon";
 import { removeCookies } from "cookies-next";
+import Barcode from "../../components/qrcode/qrcode";
 
 const Overlay = (props) => {
   const [getCurrentMenu, setCurrentMenu] = useState(0);
@@ -35,7 +36,7 @@ const Overlay = (props) => {
               onClick={() => changeMenu(2)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
-              MediaShare
+              QR Code
             </div>
             <div
               onClick={() => changeMenu(3)}
@@ -47,7 +48,7 @@ const Overlay = (props) => {
               onClick={() => changeMenu(4)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
-              QR Code
+              MediaShare
             </div>
             <div
               onClick={() => changeMenu(5)}
@@ -69,16 +70,17 @@ const Overlay = (props) => {
             </div>
           </div>
           <br />
-         
+
         </div>
         {getCurrentMenu === 0 ? (
-            <ALert keys={props.streamkey} />
-          ) : getCurrentMenu === 1 ? (
-            <Subathon keys={props.streamkey} />
-          ) : (
-            <div></div>
-          )}
-          <br/>
+          <ALert keys={props.streamkey} />
+        ) : getCurrentMenu === 1 ? (
+          <Subathon keys={props.streamkey} />
+        ) : getCurrentMenu === 2 ? (
+          <Barcode user={props.username} keys={props.streamkey} />
+        ) : null
+        }
+        <br />
       </Navbar>
     </>
   );
@@ -107,10 +109,11 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 
-  const { data } = await respon.json();
+  const { data, username } = await respon.json();
   return {
     props: {
       streamkey: data.streamKey,
+      username: username
     }, // will be passed to the page component as props
   };
 }

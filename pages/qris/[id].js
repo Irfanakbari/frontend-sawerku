@@ -1,4 +1,4 @@
-import { QRCodeSVG } from 'qrcode.react';
+import { QRCode } from "react-qrcode-logo";
 import Error from "next/error";
 
 
@@ -11,13 +11,13 @@ const Qris = (props) => {
     }
     return (
         <div className='flex items-center justify-center h-screen'>
-            <div className="qris m-auto p-5 rounded border-2 border-black bg-orange-500">
+            <div className="qris m-auto p-3 rounded border-4 border-black bg-orange-500">
                 <div className="container">
                     <div className="text-center">
                         <center>
-                        <QRCodeSVG value={qris} size={300} bgColor="transparent" fgColor="white" level='Q' />,
+                            <QRCode value={qris} bgColor="transparent" size={350} qrStyle={"dots"} eyeRadius={10} fgColor={"white"} />
                         </center>
-                        <p className='text-white text-lg '>Silahkan Scan dengan Aplikasi E-Wallet Anda</p>
+                        <p className='text-white text-2xl mt-4 font-zillaSlabSemiBold '>Scan dengan Aplikasi E-Wallet Anda</p>
                     </div>
                 </div>
             </div>

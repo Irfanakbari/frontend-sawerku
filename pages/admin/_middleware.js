@@ -9,6 +9,6 @@ export default function middleware(req,res) {
         res,
     });
     if (!kuki) {
-        return NextResponse.redirect("http://localhost:3000/login");
+        return NextResponse.redirect("https://sawerku.irfans.me/login");
     }
 }
