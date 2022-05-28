@@ -2,31 +2,37 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import Error from "next/error";
+import Image from "next/image";
+import qrisImage from "../public/images/qris.png";
+import linkajaImage from "../public/images/linkaja.png";
+import danaImage from "../public/images/dana.png";
+import spayImage from "../public/images/spay.png";
+import { isMobile } from "react-device-detect";
+import { useRouter } from "next/router";
 
 const Sawer = (props) => {
     const [nominal, setNominal] = useState("");
-    const [sawer, setSawer] = useState({
-
-    });
+    const [sawer, setSawer] = useState({});
+    const router = useRouter();
     if (props.errorCode) {
         return <Error statusCode={props.errorCode} />;
     }
     new useEffect(() => {
         document.getElementsByClassName("btn")[0].addEventListener("click", (e) => {
             e.preventDefault();
-            setNominal("10000")
+            setNominal("10000");
         });
         document.getElementsByClassName("btn")[1].addEventListener("click", (e) => {
             e.preventDefault();
-            setNominal("25000")
+            setNominal("25000");
         });
         document.getElementsByClassName("btn")[2].addEventListener("click", (e) => {
             e.preventDefault();
-            setNominal("50000")
+            setNominal("50000");
         });
         document.getElementsByClassName("btn")[3].addEventListener("click", (e) => {
             e.preventDefault();
-            setNominal("100000")
+            setNominal("100000");
         });
     }, [nominal]);
 
@@ -48,22 +54,91 @@ const Sawer = (props) => {
     }
 
     const nominalHandler = (e) => {
-        setNominal((e.target.value).replace("Rp. ", "").replace(/\./g, ""));
+        setNominal(e.target.value.replace("Rp. ", "").replace(/\./g, ""));
     };
 
     const inputHandler = (e) => {
         const name = e.target.name;
         const value = e.target.value;
         setSawer({ ...sawer, [name]: value });
-    };
-
-    const tes = (e) => {
-        e.preventDefault();
         console.log(sawer);
-        console.log(nominal.replace("Rp. ", "").replace(/\./g, ""));
     };
 
+    const submitHandler = async (e) => {
+        if (nominal === "") {
+            toast.error("Nominal tidak boleh kosong");
+        } else if (sawer.jenis === "") {
+            toast.error("Jenis tidak boleh kosong");
+        } else if (sawer.dari === "") {
+            toast.error("Dari tidak boleh kosong");
+        } else if (sawer.email === "") {
+            toast.error("Email tidak boleh kosong");
+        } else if (sawer.pesan === "") {
+            toast.error("Pesan tidak boleh kosong");
+        }
 
+        if (e == "qris") {
+            const respon = await fetch(
+                "https://backend-sawerku.herokuapp.com/api/payments/xendit/qr/" +
+                props.username,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: sawer.email,
+                        nominal: parseInt(nominal),
+                        from: sawer.dari,
+                        pesan: sawer.pesan,
+                        metode: e,
+                    }),
+                }
+            );
+            const datas = await respon.json();
+            if (datas.status === "success") {
+                const { external_id } = datas.data;
+                router.push("/qris/" + external_id);
+            } else {
+                toast.error("Gagal membuat Pembayaran");
+            }
+        } else {
+            const respon = await fetch(
+                "https://backend-sawerku.herokuapp.com/api/payments/xendit/" +
+                props.username,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: sawer.email,
+                        nominal: parseInt(nominal),
+                        from: sawer.dari,
+                        pesan: sawer.pesan,
+                        metode: e,
+                    }),
+                }
+            );
+            const { data, status } = await respon.json();
+            console.log(data)
+            if (status === "success") {
+                if (isMobile) {
+                    const { actions } = data;
+                    router.push(actions.mobile_web_checkout_url);
+                } else {
+                    const { actions } = data;
+                    if (actions.desktop_web_checkout_url) {
+                        router.push(actions.desktop_web_checkout_url);
+                    } else {
+                        router.push(actions.mobile_deeplink_checkout_url);
+                    }
+                }
+            } else {
+                toast.error("Gagal membuat Pembayaran");
+            }
+        }
+    };
 
     return (
         <>
@@ -81,7 +156,7 @@ const Sawer = (props) => {
                     </h1>
                     <br />
                     <div className=" mx-auto font-inter p-4">
-                        <form>
+                        <form onSubmit={submitHandler}>
                             <label>
                                 <span className="block mb-2 text-[#4A4154] font-zillaSlabMedium text-left after:content-['*'] after:ml-1 after:text-[red]">
                                     Username :
@@ -110,39 +185,31 @@ const Sawer = (props) => {
                                     placeholder="Ketik Jumlah Dukungan"
                                     className="py-2 w-full block border-b-2 placeholder:text-[#CCD5DD] placeholder:font-medium placeholder:text-md focus:outline-none invalid:text-[red] invalid:border-[red]"
                                 ></input>
-                                {
-                                    nominal < 5000 ? <span className="block text-left text-red-500 text-sm mt-2">
+                                {nominal < 5000 ? (
+                                    <span className="block text-left text-red-500 text-sm mt-2">
                                         Nominal minimum adalah Rp5.000
-                                    </span> : null
-                                }
+                                    </span>
+                                ) : null}
                             </label>
                             <div className="container mt-4">
                                 <div className="grid grid-cols-4 gap-2 w-full justify-center">
                                     <div className="col-span-1">
-                                        <button
-                                            className="w-full btn bg-[#55A9B4] hover:bg-[#196b76] border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                        >
+                                        <button className="w-full btn bg-orange-400 hover:bg-orange-500 border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                             10k
                                         </button>
                                     </div>
                                     <div className="col-span-1 ">
-                                        <button
-                                            className="bg-[#55A9B4] btn w-full hover:bg-[#196b76] border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                        >
+                                        <button className="bg-yellow-400 btn w-full hover:bg-yellow-500 border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                             25k
                                         </button>
                                     </div>
                                     <div className="col-span-1">
-                                        <button
-                                            className="bg-[#55A9B4] btn w-full hover:bg-[#196b76] border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                        >
+                                        <button className="bg-blue-400 btn w-full hover:bg-blue-500 border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                             50k
                                         </button>
                                     </div>
                                     <div className="col-span-1">
-                                        <button
-                                            className="bg-[#55A9B4] btn w-full hover:bg-[#196b76] border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                                        >
+                                        <button className="bg-[#55A9B4] btn w-full hover:bg-[#196b76] border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                             100k
                                         </button>
                                     </div>
@@ -160,11 +227,11 @@ const Sawer = (props) => {
                                     placeholder="Budiman"
                                     className="py-2 w-full block border-b-2 placeholder:text-[#CCD5DD] placeholder:font-medium placeholder:text-md focus:outline-none invalid:text-[red] invalid:border-[red]"
                                 ></input>
-                                {
-                                    !sawer.dari ? <span className="block text-left text-red-500 text-sm mt-2">
+                                {!sawer.dari ? (
+                                    <span className="block text-left text-red-500 text-sm mt-2">
                                         Nama tidak boleh kosong
-                                    </span> : null
-                                }
+                                    </span>
+                                ) : null}
                             </label>
                             <br />
                             <label>
@@ -178,11 +245,11 @@ const Sawer = (props) => {
                                     placeholder="emailku@email.com"
                                     className="py-2 w-full block border-b-2 placeholder:text-[#CCD5DD] placeholder:font-medium placeholder:text-md focus:outline-none invalid:text-[red] invalid:border-[red]"
                                 ></input>
-                                {
-                                    !sawer.email ? <span className="block text-left text-red-500 text-sm mt-2">
+                                {!sawer.email ? (
+                                    <span className="block text-left text-red-500 text-sm mt-2">
                                         Email tidak boleh kosong
-                                    </span> : null
-                                }
+                                    </span>
+                                ) : null}
                             </label>
                             <br />
                             <label>
@@ -196,16 +263,53 @@ const Sawer = (props) => {
                                     placeholder="Selamat ya"
                                     className="py-2 w-full block border-b-2 placeholder:text-[#CCD5DD] placeholder:font-medium placeholder:text-md focus:outline-none invalid:text-[red] invalid:border-[red]"
                                 ></input>
-                                {
-                                    !sawer.pesan ? <span className="block text-left text-red-500 text-sm mt-2">
+                                {!sawer.pesan ? (
+                                    <span className="block text-left text-red-500 text-sm mt-2">
                                         Pesan harus diisi
-                                    </span> : null
-                                }
+                                    </span>
+                                ) : null}
                             </label>
                             <br />
-                            <button onClick={tes} className="bg-[#55A9B4] hover:bg-[#196b76] border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline">
-                                Sawer
-                            </button>
+                            <label>
+                                <span className="block mb-2 text-[#4A4154] font-zillaSlabMedium text-left after:content-['*'] after:ml-1 after:text-[red]">
+                                    Metode Pembayaran :
+                                </span>
+                            </label>
+                            <br />
+                            <div className="grid grid-cols-2 md:grid-cols-4 sm:grid-cols-4 gap-2 w-full justify-center ">
+                                <div className="col-span-1 ">
+                                    <div
+                                        onClick={() => submitHandler("qris")}
+                                        className="w-full h-full disabled:cursor-not-allowed bg-green-300 hover:bg-green-500 border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-6 px-9 rounded focus:outline-none focus:shadow-outline"
+                                    >
+                                        <Image src={qrisImage} className="" alt="qris" />
+                                    </div>
+                                </div>
+                                <div className="col-span-1">
+                                    <div
+                                        onClick={() => submitHandler("ID_LINKAJA")}
+                                        className="w-full h-full disabled:cursor-not-allowed bg-green-300 hover:bg-green-500 border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-6 px-9 rounded focus:outline-none focus:shadow-outline"
+                                    >
+                                        linkaja
+                                    </div>
+                                </div>
+                                <div className="col-span-1">
+                                    <div
+                                        onClick={() => submitHandler("ID_DANA")}
+                                        className="w-full  disabled:cursor-not-allowed h-full bg-green-300 hover:bg-green-500 border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-6 px-9 rounded focus:outline-none focus:shadow-outline"
+                                    >
+                                        <Image src={danaImage} className="" alt="qris" />
+                                    </div>
+                                </div>
+                                <div className="col-span-1">
+                                    <div
+                                        onClick={() => submitHandler("ID_SHOPEEPAY")}
+                                        className="w-full  h-full disabled:cursor-not-allowed bg-green-300 hover:bg-green-500 border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-6 px-9 rounded focus:outline-none focus:shadow-outline"
+                                    >
+                                        <Image src={spayImage} className="" alt="qris" />
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -216,15 +320,17 @@ const Sawer = (props) => {
 
 export async function getServerSideProps(req) {
     const { username } = req.query;
-    const res = await fetch('https://backend-sawerku.herokuapp.com/api/users/' + username);
+    const res = await fetch(
+        "https://backend-sawerku.herokuapp.com/api/users/" + username
+    );
     const errorCode = res.ok ? false : res.status;
 
     return {
         props: {
             errorCode,
             username,
-        }
-    }
+        },
+    };
 }
 
 export default Sawer;
