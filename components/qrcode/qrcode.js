@@ -53,7 +53,7 @@ const Barcode = (props) => {
                     }}>
                         <div className="flex mx-auto justify-center">
                             <div className="row">
-                                <QRCode value={"https://sawerku.irfans.me/" + props.user} bgColor="transparent" size={250} qrStyle={"dots"} eyeRadius={10} fgColor={
+                                <QRCode value={process.env.BASE_URL + props.user} bgColor="transparent" size={250} qrStyle={"dots"} eyeRadius={10} fgColor={
                                     "#"+config.barcodecolor
                                 } />
                             </div>
@@ -112,7 +112,7 @@ const Barcode = (props) => {
                     <input
                         id="url"
                         type="text"
-                        value={`https://sawerku.irfans.me/modules/barcode?key=${props.keys}&bgColor=${config.bgColor}&barcodecolor=${config.barcodecolor}&user=${props.user}`}
+                        value={`${props.baseurl}modules/barcode?key=${props.keys}&bgColor=${config.bgColor}&barcodecolor=${config.barcodecolor}&user=${props.user}`}
                         className="w-full py-2  border-b-[1px] font-zillaSlabLight border-black focus:outline-none"
                         disabled
                     />

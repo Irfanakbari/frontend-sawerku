@@ -1,20 +1,69 @@
-import { useState, useEffect } from "react"
+import { io } from "socket.io-client";
+import React from "react";
 
-const TimerModule = (props) => {
-    const [time, setTime] = useState({
-        hour: props.data.hour,
-        minute: props.data.minute,
-        second: props.data.second,
+class TimerModule extends React.Component {
+    constructor(props) {
+        super(props);
+        this.rule = this.props.rule;
+        this.state = {
+            hour: this.props.data.hour,
+            minute: this.props.data.minute,
+            second: this.props.data.second,
+            isStart: false,
+            isEdit: false,
+        };
+        this.countdown = 0;
+        this.socket = io("https://backend-sawerku.herokuapp.com/");
+        this.socket.on("subathon" + this.props.keys, (data) => {
+            this.addTime(data.nominal);
+        });
+        this.timer = this.timer.bind(this);
+    }
 
-    });
-    const [isStart, setIsStart] = useState(false);
-    const [isEdit, setIsEdit] = useState(false);
+    componentDidMount() {
+    }
 
-    useEffect(() => {
-        let inteval;
-        if (isStart) {
-            inteval = setInterval(() => {
-                let { hour, minute, second } = time;
+    componentWillUnmount() {
+        this.socket.off("subathon" + this.props.keys);
+    }
+
+    addTime = (nominal) => {
+        console.log(nominal);
+        let temp;
+        for (let i = 0; i < this.rule.length; i++) {
+            if (nominal >= this.rule[i].gross) {
+                temp = this.rule[i];
+                // if current temp less than next temp
+                // if (this.rule[i + 1] && temp.gross < this.rule[i + 1].gross) {
+                //     temp = this.rule[i + 1];
+                // }
+            }
+        }
+        let { hour, minute, second } = this.state;
+        if (parseInt(second) + parseInt(temp.secplus) >= 60) {
+            second = parseInt(second) + parseInt(temp.secplus) - 60;
+            minute++;
+        } else {
+            second = parseInt(second) + parseInt(temp.secplus);
+        }
+        if (parseInt(minute) + parseInt(temp.minplus) >= 60) {
+            minute = parseInt(minute) + parseInt(temp.minplus) - 60;
+            hour++;
+        } else {
+            minute = parseInt(minute) + parseInt(temp.minplus);
+        }
+        hour = parseInt(hour) + parseInt(temp.jamplus);
+        this.setState({
+            hour: hour,
+            minute: minute,
+            second: second,
+        });
+    }
+
+    timer = () => {
+        if (this.countdown == 0) {
+            this.countdown = setInterval(() => {
+                let { hour, minute, second } = this.state;
                 if (second > 0) {
                     second--;
                 } else {
@@ -29,93 +78,136 @@ const TimerModule = (props) => {
                         }
                     }
                 }
-                setTime({
+                this.setState({
                     hour,
                     minute,
                     second,
                 });
             }, 1000);
-        }
-        return () => clearInterval(inteval);
-    }, [time, isStart]);
+        } else {
+            clearInterval(this.countdown);
+            this.countdown = 0;
 
-    const submitEdit = (e) => {
+        }
+    }
+
+
+    setIsStart = (isStart) => {
+        this.setState({
+            isStart,
+        });
+        this.timer();
+    }
+
+    setIsEdit = (isEdit) => {
+        this.setState({
+            isEdit,
+        });
+    }
+
+    submitEdit = (e) => {
         e.preventDefault();
         var jam = document.getElementById("jam").value;
         var menit = document.getElementById("menit").value;
         var detik = document.getElementById("detik").value;
-        setTime({
-            hour: parseInt(time.hour) + parseInt(jam),
-            minute: parseInt(time.minute) + parseInt(menit),
-            second: parseInt(time.second) + parseInt(detik),
+        var time = {
+            hour: parseInt(this.state.hour) + parseInt(jam),
+            minute: parseInt(this.state.minute) + parseInt(menit),
+            second: parseInt(this.state.second) + parseInt(detik),
+        };
+        this.setState({
+            hour: time.hour,
+            minute: time.minute,
+            second: time.second,
         });
-        setIsEdit(false);
-    };
+    }
 
 
-    return (
-        <>
-            <div
-                style={{
-                    backgroundColor: "#" + props.bgcolor,
-                }}
-                className={`border-[3px] m-4 border-black rounded-md w-11/12 mx-auto p-6 text-center text-3xl font-medium`}
-            >
-                <span
-                    className="block mb-2 text-[10vw] p-10"
+    render() {
+        return (
+            <>
+                <div
                     style={{
-                        color: "#" + props.txtcolor,
+                        backgroundColor: "#" + this.props.bgcolor,
                     }}
+                    className={`border-[3px] m-4 border-black rounded-md w-11/12 mx-auto p-6 text-center text-3xl font-medium`}
                 >
-                    <span className="m-3 jam">
-                        {time.hour < 10 ? "0" + time.hour : time.hour}
+                    <span
+                        className="block mb-2 text-[10vw] p-10"
+                        style={{
+                            color: "#" + this.props.txtcolor,
+                        }}
+                    >
+                        <span className="m-3 jam">
+                            {this.state.hour < 10 ? "0" + this.state.hour : this.state.hour}
+                        </span>
+                        <span>:</span>
+                        <span className="m-3 menit">
+                            {this.state.minute < 10 ? "0" + this.state.minute : this.state.minute}
+                        </span>
+                        <span>:</span>
+                        <span className="m-3 detik transition">
+                            {this.state.second < 10 ? "0" + this.state.second : this.state.second}
+                        </span>
                     </span>
-                    <span>:</span>
-                    <span className="m-3 menit">
-                        {time.minute < 10 ? "0" + time.minute : time.minute}
-                    </span>
-                    <span>:</span>
-                    <span className="m-3 detik transition">{
-                        time.second < 10 ? "0" + time.second : time.second
-                    }</span>
-                </span>
-            </div>
-            <div className="w-full justify-center flex">
-                <button
-                    className="m-4 text-center "
-                    onClick={() => setIsStart(!isStart)}
-                >
-                    {
-                        isStart ? "Stop" : "Start"
-                    }
-                </button>
-                <button
-                    className="m-4 text-center"
-                    onClick={() => setIsEdit(!isEdit)}
-                >
-                    {
-                        isEdit ? "Close" : "Edit"
-                    }
-                </button>
-            </div>
-            {
-                isEdit ? (<div className="w-full justify-center flex">
-                    <form onSubmit={submitEdit}>
-                        <label className="m-4 text-center"> Jam
-                            <input type="number" id="jam" className="m-4 text-center border-black border-2" defaultValue={0} />
-                        </label>
-                        <label className="m-4 text-center"> Menit
-                            <input type="number" id="menit" className="m-4 text-center border-black border-2" defaultValue={0}  />
-                        </label>
-                        <label className="m-4 text-center"> Detik
-                            <input type="number" id="detik" className="m-4 text-center border-black border-2" defaultValue={0} />
-                        </label>
-                        <button type="submit" className="block p-2 text-center m-auto rounded px-5 bg-orange-400">Save</button>
-                    </form>
-                </div>) : null
-            }
-        </>
-    )
+                </div>
+                <div className="w-full justify-center flex">
+                    <button
+                        className="m-4 text-center "
+                        onClick={() => this.setIsStart(!this.state.isStart)}
+                    >
+                        {this.state.isStart ? "Stop" : "Start"}
+                    </button>
+                    <button className="m-4 text-center" onClick={() => this.setIsEdit(!this.state.isEdit)}>
+                        {this.state.isEdit ? "Close" : "Edit"}
+                    </button>
+                </div>
+                {this.state.isEdit ? (
+                    <div className="w-full justify-center flex">
+                        <form onSubmit={this.submitEdit}>
+                            <label className="m-4 text-center">
+                                {" "}
+                                Jam
+                                <input
+                                    type="number"
+                                    id="jam"
+                                    className="m-4 text-center border-black border-2"
+                                    defaultValue={0}
+                                />
+                            </label>
+                            <label className="m-4 text-center">
+                                {" "}
+                                Menit
+                                <input
+                                    type="number"
+                                    id="menit"
+                                    className="m-4 text-center border-black border-2"
+                                    defaultValue={0}
+                                />
+                            </label>
+                            <label className="m-4 text-center">
+                                {" "}
+                                Detik
+                                <input
+                                    type="number"
+                                    id="detik"
+                                    className="m-4 text-center border-black border-2"
+                                    defaultValue={0}
+                                />
+                            </label>
+                            <button
+                                type="submit"
+                                className="block p-2 text-center m-auto rounded px-5 bg-orange-400"
+                            >
+                                Save
+                            </button>
+                        </form>
+                    </div>
+                ) : null}
+            </>
+        );
+    }
 }
 
-export default TimerModule
+
+export default TimerModule;

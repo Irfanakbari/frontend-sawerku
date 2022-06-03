@@ -73,11 +73,11 @@ const Overlay = (props) => {
 
         </div>
         {getCurrentMenu === 0 ? (
-          <ALert keys={props.streamkey} />
+          <ALert keys={props.streamkey} baseurl={props.baseURL} />
         ) : getCurrentMenu === 1 ? (
-          <Subathon keys={props.streamkey} />
+          <Subathon keys={props.streamkey} baseurl={props.baseURL} />
         ) : getCurrentMenu === 2 ? (
-          <Barcode user={props.username} keys={props.streamkey} />
+          <Barcode user={props.username} keys={props.streamkey} baseurl={props.baseURL} />
         ) : null
         }
         <br />
@@ -108,12 +108,13 @@ export async function getServerSideProps({ req, res }) {
       },
     };
   }
-
+  const baseURL = process.env.BASE_URL
   const { data, username } = await respon.json();
   return {
     props: {
       streamkey: data.streamKey,
-      username: username
+      username: username,
+      baseURL: baseURL,
     }, // will be passed to the page component as props
   };
 }

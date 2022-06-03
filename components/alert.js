@@ -285,7 +285,7 @@ class ALert extends React.Component {
               type="text"
               className="w-full py-2  border-b-[1px] font-zillaSlabLight border-black focus:outline-none"
               disabled
-              value={"https://sawerku.irfans.me/modules/alert?key=" + this.props.keys + "&mindonasi=" + this.state.mindonasi + "&mintts=" + this.state.mintts + "&mingif=" + this.state.mingif + "&durasinotif=" + this.state.durasinotif + "&bgcolor=" + this.state.bgcolor + "&hgcolor=" + this.state.hgcolor + "&txtcolor=" + this.state.txtcolor + "&fontweight=" + this.state.fontweight + "&template=" + this.state.template}
+              value={this.props.baseurl + "modules/alert?key=" + this.props.keys + "&mindonasi=" + this.state.mindonasi + "&mintts=" + this.state.mintts + "&mingif=" + this.state.mingif + "&durasinotif=" + this.state.durasinotif + "&bgcolor=" + this.state.bgcolor + "&hgcolor=" + this.state.hgcolor + "&txtcolor=" + this.state.txtcolor + "&fontweight=" + this.state.fontweight + "&template=" + this.state.template}
             />
           </div>
           <div className="w-full px-4 text-left block mb-4">
