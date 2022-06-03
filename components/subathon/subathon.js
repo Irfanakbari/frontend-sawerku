@@ -13,10 +13,10 @@ const Subathon = (props) => {
   });
   const [tabel, setTabel] = useState([
     {
-      gross: "",
-      jamplus: "",
-      minplus: "",
-      secplus: "",
+      gross: "0",
+      jamplus: "0",
+      minplus: "0",
+      secplus: "0",
     },
   ]);
 
@@ -33,7 +33,7 @@ const Subathon = (props) => {
     if (keys){
       setData({...data, keys: keys})
     }
-  }, [props]);
+  }, [data, props]);
 
   function handleInputChange(e) {
     const target = e.target;
@@ -186,7 +186,7 @@ const Subathon = (props) => {
               })}
             </tbody>
           </table>
-          <button type="button"   className="w-full bg-red-400 p-2 text-white text-center font-zillaSlabBold" onClick={addFormFields}>Add</button>
+          <button type="button"   className="w-full bg-green-500 p-2 text-white text-center font-zillaSlabBold hover:bg-green-600" onClick={addFormFields}>Tambah Aturan</button>
           <div className="grid grid-cols-3 gap-4 w-full px-4 text-left mt-3 mb-3">
             <div className="w-full text-left">
               <label className="text-left font-zillaSlabLight">

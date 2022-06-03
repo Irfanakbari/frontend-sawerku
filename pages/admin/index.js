@@ -55,7 +55,7 @@ const Admin = (props) => {
               desc="Integrasi dengan aplikasi lainnya."
               bgwarna="#F39467"
               bghover="#e87f4f"
-              to="/integration"
+              to="/admin/integration"
             />
           </div>
         </div>
