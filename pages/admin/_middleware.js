@@ -9,6 +9,6 @@ export default function middleware(req,res) {
         res,
     });
     if (!kuki) {
-        return NextResponse.redirect("https://sawerku.irfans.me/login");
+        return NextResponse.redirect(process.env.BASE_URL+ "login");
     }
 }

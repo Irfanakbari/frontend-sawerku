@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { io } from "socket.io-client";
 import Head from "next/head";
@@ -7,34 +7,54 @@ export default function AlertModule() {
   const { key, bgcolor, hgcolor, txtcolor, template, durasinotif, mindonasi } =
     useRouter().query;
 
+  const [queue, setQueue] = useState([]);
+
   const socket = io("https://backend-sawerku.herokuapp.com/")
 
 
   useEffect(() => {
-    const handleSocket = (dan) => {
-      if (dan.gross >= mindonasi) {
-        document.getElementById("body").style.display = "block";
-        document.getElementsByClassName("sender")[0].innerHTML = dan.dari;
-        document.getElementsByClassName("gross")[0].innerHTML = dan.gross;
-        document.getElementsByClassName("pesan")[0].innerHTML = dan.pesan;
-        setTimeout(() => {
-          document.getElementById("body").style.display = "none";
-        }, durasinotif);
+    console.log(queue)
+    while (queue.length > 0) {
+      if (queue.length > 0) {
+        const dan = queue.shift();
+        if (dan.gross >= mindonasi) {
+          document.getElementById("body").style.display = "block";
+          document.getElementsByClassName("sender")[0].innerHTML = dan.dari;
+          document.getElementsByClassName("gross")[0].innerHTML = dan.gross;
+          document.getElementsByClassName("pesan")[0].innerHTML = dan.pesan;
+        }
       }
     }
-    socket.on("alert" + key, (data) => handleSocket(data))
-
-    return () => {
-      socket.off("alert" + key)
+  setTimeout(() => {
+    if (queue.length === 0) {
+      timeout();
     }
-  }, [socket, key, durasinotif,mindonasi])
+  }, durasinotif);
+    function timeout() {
+      setTimeout(() => {
+        console.log("timeout");
+        document.getElementById("body").style.display = "none";
+      }, durasinotif);
+    }
+    return () => {
+      socket.off();
+    }
+  }, [durasinotif, mindonasi, queue, socket])
+
+
+  socket.on("alert" + key, (data) => {
+    console.log(data);
+    setQueue(queue => [...queue, data]);
+  })
+
+
 
 
   return (
     <>
-    <Head>
-      <title>Sawerku | Alert Module</title>
-    </Head>
+      <Head>
+        <title>Sawerku | Alert Module</title>
+      </Head>
       <div
         id="body"
         style={{

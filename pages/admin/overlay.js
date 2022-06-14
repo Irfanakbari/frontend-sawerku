@@ -1,7 +1,7 @@
 import Navbar from "../../components/navbar";
 import Head from "next/head";
 import React, { useState } from "react";
-import ALert from "../../components/alert";
+import ALert from "../../components/alert/alert";
 import Subathon from "../../components/subathon/subathon";
 import { removeCookies } from "cookies-next";
 import Barcode from "../../components/qrcode/qrcode";
@@ -38,25 +38,25 @@ const Overlay = (props) => {
             >
               QR Code
             </div>
-            <div
+            {/* <div
               onClick={() => changeMenu(3)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
               Voting
-            </div>
-            <div
+            </div> */}
+            {/* <div
               onClick={() => changeMenu(4)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
               MediaShare
-            </div>
+            </div> */}
             <div
               onClick={() => changeMenu(5)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
               Milestone
             </div>
-            <div
+            {/* <div
               onClick={() => changeMenu(6)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
@@ -67,17 +67,17 @@ const Overlay = (props) => {
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
               Running Text
-            </div>
+            </div> */}
           </div>
           <br />
 
         </div>
         {getCurrentMenu === 0 ? (
-          <ALert keys={props.streamkey} />
+          <ALert keys={props.streamkey} baseurl={props.baseURL} />
         ) : getCurrentMenu === 1 ? (
-          <Subathon keys={props.streamkey} />
+          <Subathon keys={props.streamkey} baseurl={props.baseURL} />
         ) : getCurrentMenu === 2 ? (
-          <Barcode user={props.username} keys={props.streamkey} />
+          <Barcode user={props.username} keys={props.streamkey} baseurl={props.baseURL} />
         ) : null
         }
         <br />
@@ -108,12 +108,13 @@ export async function getServerSideProps({ req, res }) {
       },
     };
   }
-
+  const baseURL = process.env.BASE_URL
   const { data, username } = await respon.json();
   return {
     props: {
       streamkey: data.streamKey,
-      username: username
+      username: username,
+      baseURL: baseURL,
     }, // will be passed to the page component as props
   };
 }
