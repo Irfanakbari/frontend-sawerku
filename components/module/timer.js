@@ -30,7 +30,7 @@ class TimerModule extends React.Component {
     addTime = (nominal) => {
         let temp;
         for (let i = 0; i < this.rule.length; i++) {
-            if (nominal >= this.rule[i].gross) {
+            if (nominal >= parseInt(this.rule[i].gross)) {
                 temp = this.rule[i];
                 // if current temp less than next temp
                 // if (this.rule[i + 1] && temp.gross < this.rule[i + 1].gross) {
