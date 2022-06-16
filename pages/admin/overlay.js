@@ -93,7 +93,7 @@ export async function getServerSideProps({ req, res }) {
   );
   const { credentials } = req.cookies;
   const token = JSON.parse(credentials).data.token;
-  const respon = await fetch("https://backend-sawerku.herokuapp.com/api/streamkey", {
+  const respon = await fetch("https://backend-sawerku.herokuapp.com/v1/user/streamkey", {
     method: "GET",
     headers: {
       authorization: `${token}`,

@@ -10,7 +10,7 @@ const Integration = (props) => {
         const url = e.target.url.value;
         const message = e.target.message.value;
 
-        await fetch(`https://backend-sawerku.herokuapp.com/api/users/webhook`, {
+        await fetch(`https://backend-sawerku.herokuapp.com/v1/user/webhook`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -46,7 +46,7 @@ const Integration = (props) => {
         const url = e.target.url.value;
         const message = e.target.message.value;
 
-        await fetch(`https://backend-sawerku.herokuapp.com/api/users/webhook`, {
+        await fetch(`https://backend-sawerku.herokuapp.com/v1/user/webhook`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -185,7 +185,7 @@ const Integration = (props) => {
 export async function getServerSideProps({ req, res }) {
     const credentials = getCookie("credentials", { req, res });
     const token = JSON.parse(credentials).data.token;
-    const respon = await fetch("https://backend-sawerku.herokuapp.com/api/saldo", {
+    const respon = await fetch("https://backend-sawerku.herokuapp.com/v1/user/saldo", {
         method: "GET",
         headers: {
             authorization: `${token}`,
@@ -201,7 +201,7 @@ export async function getServerSideProps({ req, res }) {
         };
     }
     let hook;
-    const respon2 = await fetch("https://backend-sawerku.herokuapp.com/api/users/webhook", {
+    const respon2 = await fetch("https://backend-sawerku.herokuapp.com/v1/user/webhook", {
         method: "GET",
         headers: {
             authorization: `${token}`,

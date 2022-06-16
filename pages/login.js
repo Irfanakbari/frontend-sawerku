@@ -10,7 +10,7 @@ const Login = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     setLoading(true);
-    postAPI("https://backend-sawerku.herokuapp.com/api/login", {
+    postAPI("https://backend-sawerku.herokuapp.com/v1/auth/login", {
       email: e.target.email.value,
       password: e.target.password.value,
     }).then((res) => {
@@ -41,6 +41,7 @@ const Login = () => {
     });
   };
   const postAPI = async (url, data) => {
+    console.log(data);
     const response = await fetch(url, {
       method: "POST",
       headers: {

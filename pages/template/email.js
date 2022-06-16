@@ -8,7 +8,7 @@ const Email = () => {
     const submitHandler = (e) => {
         e.preventDefault();
         setLoading(true);
-        postAPI("https://backend-sawerku.herokuapp.com/api/email", {
+        postAPI("https://backend-sawerku.herokuapp.com/v1/email", {
             email: e.target.email.value,
         }).then((res) => {
             if (res.status === "failed") {

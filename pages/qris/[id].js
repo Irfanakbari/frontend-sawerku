@@ -30,7 +30,7 @@ const Qris = (props) => {
 export async function getServerSideProps(req, res) {
     const { id } = req.query;
     const ress = await fetch(
-        "https://backend-sawerku.herokuapp.com/api/payments/xendit/qr/qr/get",
+        "https://backend-sawerku.herokuapp.com/v1/payments/xendit/getqr",
         {
             method: "POST",
             headers: {

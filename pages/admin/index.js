@@ -71,7 +71,7 @@ export async function getServerSideProps({ req,res }) {
   )
   const credentials  = getCookie("credentials", { req, res });
   const token = JSON.parse(credentials).data.token;
-  const respon = await fetch("https://backend-sawerku.herokuapp.com/api/users", {
+  const respon = await fetch("https://backend-sawerku.herokuapp.com/v1/user", {
     method: "GET",
     headers: {
       authorization: `${token}`,

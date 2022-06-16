@@ -84,7 +84,7 @@ const Cashout = (props) => {
 export async function getServerSideProps({ req,res }) {
     const credentials = getCookie("credentials",{req,res});
     const token = JSON.parse(credentials).data.token;
-    const respon = await fetch("https://backend-sawerku.herokuapp.com/api/saldo", {
+    const respon = await fetch("https://backend-sawerku.herokuapp.com/v1/user/saldo", {
         method: "GET",
         headers: {
             authorization: `${token}`,
@@ -99,7 +99,7 @@ export async function getServerSideProps({ req,res }) {
             },
         };
     }
-    const respon2 = await fetch("https://backend-sawerku.herokuapp.com/api/history", {
+    const respon2 = await fetch("https://backend-sawerku.herokuapp.com/v1/user/paymenthistory", {
         method: "GET",
         headers: {
             authorization: `${token}`,

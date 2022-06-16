@@ -79,7 +79,7 @@ const Sawer = (props) => {
 
         if (e == "qris") {
             const respon = await fetch(
-                "https://backend-sawerku.herokuapp.com/api/payments/xendit/qr/" +
+                "https://backend-sawerku.herokuapp.com/v1/payments/xendit/qr/" +
                 props.username,
                 {
                     method: "POST",
@@ -104,7 +104,7 @@ const Sawer = (props) => {
             }
         } else {
             const respon = await fetch(
-                "https://backend-sawerku.herokuapp.com/api/payments/xendit/" +
+                "https://backend-sawerku.herokuapp.com/v1/payments/xendit/" +
                 props.username,
                 {
                     method: "POST",
@@ -321,7 +321,7 @@ const Sawer = (props) => {
 export async function getServerSideProps(req) {
     const { username } = req.query;
     const res = await fetch(
-        "https://backend-sawerku.herokuapp.com/api/users/" + username
+        "https://backend-sawerku.herokuapp.com/v1/users/" + username
     );
     const errorCode = res.ok ? false : res.status;
 
