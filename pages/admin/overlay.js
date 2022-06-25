@@ -7,11 +7,8 @@ import { removeCookies } from "cookies-next";
 import Barcode from "../../components/qrcode/qrcode";
 
 const Overlay = (props) => {
-  const [getCurrentMenu, setCurrentMenu] = useState(0);
+  const [CurrentMenu, setCurrentMenu] = useState(0);
 
-  const changeMenu = (index) => {
-    setCurrentMenu(index);
-  };
   return (
     <>
       <Head>
@@ -21,19 +18,19 @@ const Overlay = (props) => {
         <div className="mt-5 mb-5 p-4  w-full">
           <div className="justify-center grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4  gap-3 ">
             <div
-              onClick={() => changeMenu(0)}
+              onClick={()=>setCurrentMenu(0)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-white p-3 px-5 text-center"
             >
               Alert
             </div>
             <div
-              onClick={() => changeMenu(1)}
+              onClick={()=>setCurrentMenu(1)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
               Subathon
             </div>
             <div
-              onClick={() => changeMenu(2)}
+              onClick={()=>setCurrentMenu(2)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
               QR Code
@@ -51,7 +48,7 @@ const Overlay = (props) => {
               MediaShare
             </div> */}
             <div
-              onClick={() => changeMenu(5)}
+              onClick={() => setCurrentMenu(5)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
               Milestone
@@ -72,11 +69,11 @@ const Overlay = (props) => {
           <br />
 
         </div>
-        {getCurrentMenu === 0 ? (
+        {CurrentMenu === 0 ? (
           <ALert keys={props.streamkey} baseurl={props.baseURL} />
-        ) : getCurrentMenu === 1 ? (
+        ) : CurrentMenu === 1 ? (
           <Subathon keys={props.streamkey} baseurl={props.baseURL} />
-        ) : getCurrentMenu === 2 ? (
+        ) : CurrentMenu === 2 ? (
           <Barcode user={props.username} keys={props.streamkey} baseurl={props.baseURL} />
         ) : null
         }
@@ -92,11 +89,10 @@ export async function getServerSideProps({ req, res }) {
     "public, s-maxage=10, stale-while-revalidate=59"
   );
   const { credentials } = req.cookies;
-  const token = JSON.parse(credentials).data.token;
   const respon = await fetch("https://backend-sawerku.herokuapp.com/v1/user/streamkey", {
     method: "GET",
     headers: {
-      authorization: `${token}`,
+      authorization: `${credentials}`,
     },
   });
   if (respon.statusText !== "OK") {

@@ -14,14 +14,14 @@ const Integration = (props) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "authorization": `${props.token}`
+                "authorization": `${props.credentials}`
             },
             body: JSON.stringify({
                 discord_url: url,
                 discord_message: message
             })
         }).then(res => {
-            console.log(res.status);
+            console.log(res.body);
             if (res.status === 200) {
                 toast.success("Successfully integrated with discord", {
                     position: "top-right",
@@ -50,7 +50,7 @@ const Integration = (props) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "authorization": `${props.token}`
+                "authorization": `${props.credentials}`
             },
             body: JSON.stringify({
                 webhook_url: url,
@@ -102,7 +102,7 @@ const Integration = (props) => {
                                         <input
                                             type="text"
                                             name="url"
-                                            defaultValue={props.hook[0].discord_hook}
+                                            defaultValue={props.hook.discord_hook}
                                             required
                                             placeholder="https://discord.com/api/webhooks/..."
                                             className="py-2 w-full block border-b-2 placeholder:text-[#CCD5DD] placeholder:font-medium placeholder:text-md focus:outline-none invalid:text-[red] invalid:border-[red]"
@@ -116,7 +116,7 @@ const Integration = (props) => {
                                         <input
                                             name="message"
                                             type="text"
-                                            defaultValue={props.hook[0].discord_message}
+                                            defaultValue={props.hook.discord_message}
                                             required
                                             placeholder="yeey kamu dapat {amount} dari {donatur}"
                                             className="py-2 w-full block border-b-2 placeholder:text-[#CCD5DD] placeholder:font-medium placeholder:text-md focus:outline-none invalid:text-[red] invalid:border-[red]"
@@ -148,7 +148,7 @@ const Integration = (props) => {
                                             type="text"
                                             name="url"
                                             required
-                                            defaultValue={props.hook[0].webhook}
+                                            defaultValue={props.hook.webhook}
                                             placeholder="https://domain.com/api/webhooks/..."
                                             className="py-2 w-full block border-b-2 placeholder:text-[#CCD5DD] placeholder:font-medium placeholder:text-md focus:outline-none invalid:text-[red] invalid:border-[red]"
                                         ></input>
@@ -162,7 +162,7 @@ const Integration = (props) => {
                                             name="message"
                                             type="text"
                                             required
-                                            defaultValue={props.hook[0].webhook_message}
+                                            defaultValue={props.hook.webhook_message}
                                             placeholder="yeey kamu dapat {amount} dari {donatur}"
                                             className="py-2 w-full block border-b-2 placeholder:text-[#CCD5DD] placeholder:font-medium placeholder:text-md focus:outline-none invalid:text-[red] invalid:border-[red]"
                                         ></input>
@@ -184,11 +184,10 @@ const Integration = (props) => {
 
 export async function getServerSideProps({ req, res }) {
     const credentials = getCookie("credentials", { req, res });
-    const token = JSON.parse(credentials).data.token;
     const respon = await fetch("https://backend-sawerku.herokuapp.com/v1/user/saldo", {
         method: "GET",
         headers: {
-            authorization: `${token}`,
+            authorization: `${credentials}`,
         },
     });
     if (respon.statusText !== "OK") {
@@ -204,17 +203,16 @@ export async function getServerSideProps({ req, res }) {
     const respon2 = await fetch("https://backend-sawerku.herokuapp.com/v1/user/webhook", {
         method: "GET",
         headers: {
-            authorization: `${token}`,
+            authorization: `${credentials}`,
         },
     });
     if (respon2.status === 200) {
         hook = await respon2.json();
-        console.log(hook);
     }
 
     return {
         props: {
-            token,
+            credentials,
             hook : hook.data
         }, // will be passed to the page component as props
     };

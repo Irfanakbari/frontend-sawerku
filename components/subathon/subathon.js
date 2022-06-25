@@ -10,6 +10,7 @@ const Subathon = (props) => {
     txtcolor: "FFFFFF",
     fontweight: "400",
     waktu: [],
+    keys : props.keys,
   });
   const [tabel, setTabel] = useState([
     {
@@ -23,17 +24,14 @@ const Subathon = (props) => {
   useEffect(() => {
     const datas = localStorage.getItem("subathon");
     const data2 = localStorage.getItem("subathon-tabel");
-    const keys = props.keys
     if (datas) {
       setData(JSON.parse(datas));
+      setData(d=>({...d, keys: props.keys}));
     }
     if (data2){
       setTabel(JSON.parse(data2));
     }
-    if (keys){
-      setData({...data, keys: keys})
-    }
-  }, [data, props]);
+  }, [props.keys]);
 
   function handleInputChange(e) {
     const target = e.target;

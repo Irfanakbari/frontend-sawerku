@@ -35,13 +35,15 @@ const Login = () => {
           pauseOnHover: true,
           draggable: true,
         });
-        setCookies("credentials", res);
+        setCookies("credentials", res.data.token,{
+          // expires 1 hour from now
+          expires: new Date(Date.now() + 1000 * 60 * 60),
+        });
         Router.push("/admin");
       }
     });
   };
   const postAPI = async (url, data) => {
-    console.log(data);
     const response = await fetch(url, {
       method: "POST",
       headers: {

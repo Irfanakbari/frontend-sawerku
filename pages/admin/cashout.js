@@ -7,7 +7,7 @@ const Cashout = (props) => {
     const columns = [
         {
             name: 'Tanggal',
-            selector: row => row.timestamp.split('T')[0],
+            selector: row => row.createdAt.split('T')[0],
         },
         {
             name: 'Nominal',
@@ -48,7 +48,7 @@ const Cashout = (props) => {
                                     <div className="text-center">Siap Dicairkan</div>
                                 </div>
                                 <div className="py-10 font-zillaSlabBold text-4xl font-bold">
-                                    {props.saldo ? props.saldo : "Rp 0,-"}
+                                    {props.saldo ? props.payout : "Rp 0,-"}
                                 </div>
                                 <button
                                     className="bg-[#55A9B4] hover:bg-[#398690] border-2 border-black text-white font-medium font-zillaSlabMedium text-xl py-2 px-4 rounded-xl mb-6 focus:outline-none focus:shadow-outline"
@@ -83,11 +83,10 @@ const Cashout = (props) => {
 
 export async function getServerSideProps({ req,res }) {
     const credentials = getCookie("credentials",{req,res});
-    const token = JSON.parse(credentials).data.token;
     const respon = await fetch("https://backend-sawerku.herokuapp.com/v1/user/saldo", {
         method: "GET",
         headers: {
-            authorization: `${token}`,
+            authorization: `${credentials}`,
         },
     });
     if (respon.statusText !== "OK") {
@@ -102,7 +101,7 @@ export async function getServerSideProps({ req,res }) {
     const respon2 = await fetch("https://backend-sawerku.herokuapp.com/v1/user/paymenthistory", {
         method: "GET",
         headers: {
-            authorization: `${token}`,
+            authorization: `${credentials}`,
         },
     });
     const history = await respon2.json();
@@ -110,6 +109,7 @@ export async function getServerSideProps({ req,res }) {
     return {
         props: {
             saldo: intToRupiah(data.saldo),
+            payout: intToRupiah(data.payoutSaldo),
             history: history.data,
         }, // will be passed to the page component as props
     };

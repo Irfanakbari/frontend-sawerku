@@ -4,6 +4,7 @@ import { checkCookies } from 'cookies-next';
 
 
 export default function middleware(req,res) {
+    console.log(req.headers.cookie);
     const kuki = checkCookies('credentials', {
         req,
         res,
