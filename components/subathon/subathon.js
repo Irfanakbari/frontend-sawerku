@@ -298,7 +298,7 @@ const Subathon = (props) => {
             className="w-full py-2  border-b-[1px] font-zillaSlabLight border-black focus:outline-none"
             disabled
             value={
-              props.baseurl+"modules/subathon?key=" +
+              props.baseurl+"modules/SubathonModule?key=" +
               data.keys +
               "&jamawal=" +
               data.jamawal +

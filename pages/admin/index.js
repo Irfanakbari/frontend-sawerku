@@ -1,6 +1,6 @@
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
-import Menu from "../../components/adminmenu";
+import Menu from "../../components/Menu";
 import { removeCookies,getCookie } from "cookies-next";
 
 

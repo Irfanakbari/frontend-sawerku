@@ -4,7 +4,6 @@ import { toast, ToastContainer } from "react-toastify";
 import Error from "next/error";
 import Image from "next/image";
 import qrisImage from "../public/images/qris.png";
-import linkajaImage from "../public/images/linkaja.png";
 import danaImage from "../public/images/dana.png";
 import spayImage from "../public/images/spay.png";
 import { isMobile } from "react-device-detect";
@@ -14,10 +13,7 @@ const Sawer = (props) => {
     const [nominal, setNominal] = useState("");
     const [sawer, setSawer] = useState({});
     const router = useRouter();
-    if (props.errorCode) {
-        return <Error statusCode={props.errorCode} />;
-    }
-    new useEffect(() => {
+    useEffect(() => {
         document.getElementsByClassName("btn")[0].addEventListener("click", (e) => {
             e.preventDefault();
             setNominal("10000");
@@ -35,9 +31,13 @@ const Sawer = (props) => {
             setNominal("100000");
         });
     }, [nominal]);
+    
+    if (props.errorCode) {
+        return <Error statusCode={props.errorCode} />;
+    }
 
     function formatRupiah(angka, prefix) {
-        var number_string = angka.replace(/[^,\d]/g, "").toString(),
+        let number_string = angka.replace(/[^,\d]/g, "").toString(),
             split = number_string.split(","),
             sisa = split[0].length % 3,
             rupiah = split[0].substr(0, sisa),
@@ -45,7 +45,7 @@ const Sawer = (props) => {
 
         // tambahkan titik jika yang di input sudah menjadi angka ribuan
         if (ribuan) {
-            var separator = sisa ? "." : "";
+            let separator = sisa ? "." : "";
             rupiah += separator + ribuan.join(".");
         }
 

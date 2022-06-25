@@ -1,52 +1,8 @@
 import Head from "next/head";
-import { useState } from "react";
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 
 const Email = () => {
-    const [loading, setLoading] = useState(false);
-    const submitHandler = (e) => {
-        e.preventDefault();
-        setLoading(true);
-        postAPI("https://backend-sawerku.herokuapp.com/v1/email", {
-            email: e.target.email.value,
-        }).then((res) => {
-            if (res.status === "failed") {
-                setLoading(false);
-                toast.error(res.message, {
-                    position: "top-right",
-                    autoClose: 2000,
-                    theme: "colored",
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                });
-            } else {
-                toast.success("Silahkan Cek Email Aktivasi Anda", {
-                    position: "top-right",
-                    autoClose: 2000,
-                    theme: "colored",
-                    hideProgressBar: true,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                });
-                setLoading(false);
-            }
-        });
-    };
-    const postAPI = async (url, data) => {
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-        return response.json();
-    };
-
     return (
         <>
             <Head>

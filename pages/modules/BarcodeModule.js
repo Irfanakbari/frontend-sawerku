@@ -4,7 +4,7 @@ import Head from "next/head";
 
 
 export default function BarcodeModule() {
-    const { key, bgColor, barcodecolor, user } = useRouter().query;
+    const { bgColor, barcodecolor, user } = useRouter().query;
     return (
         <>
             <Head>

@@ -112,7 +112,7 @@ const Barcode = (props) => {
                     <input
                         id="url"
                         type="text"
-                        value={`${props.baseurl}modules/barcode?key=${props.keys}&bgColor=${config.bgColor}&barcodecolor=${config.barcodecolor}&user=${props.user}`}
+                        value={`${props.baseurl}modules/BarcodeModule?key=${props.keys}&bgColor=${config.bgColor}&barcodecolor=${config.barcodecolor}&user=${props.user}`}
                         className="w-full py-2  border-b-[1px] font-zillaSlabLight border-black focus:outline-none"
                         disabled
                     />

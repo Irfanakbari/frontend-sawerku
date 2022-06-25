@@ -1,10 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
-import TimerModule from "../../components/module/timer";
+import TimerModule from "../../components/module/TimerModule";
 
 export default function SubathonModule({props}) {
-    const router = useRouter();
-    const [rule, setRule] = useState([]);
     const { key, bgcolor, txtcolor, jamawal, menitawal, detikawal, rules } = props;
 
 
@@ -25,7 +23,7 @@ export default function SubathonModule({props}) {
 
 SubathonModule.getInitialProps =async ({ query }) => {
     const { key, bgcolor, txtcolor, jamawal, menitawal, detikawal, rules } = query;
-    var ruless = decodeURI(rules);
+    let ruless = decodeURI(rules);
     ruless = await JSON.parse(ruless);
     return {
         props: {

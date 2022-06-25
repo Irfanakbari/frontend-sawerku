@@ -2,9 +2,9 @@ import Navbar from "../../components/navbar";
 import Head from "next/head";
 import React, { useState } from "react";
 import ALert from "../../components/alert/alert";
-import Subathon from "../../components/subathon/subathon";
+import Subathon from "../../components/subathon/Subathon";
 import { removeCookies } from "cookies-next";
-import Barcode from "../../components/qrcode/qrcode";
+import Barcode from "../../components/qrcode/Barcode";
 
 const Overlay = (props) => {
   const [CurrentMenu, setCurrentMenu] = useState(0);
