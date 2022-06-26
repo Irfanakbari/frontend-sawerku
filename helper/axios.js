@@ -5,7 +5,7 @@ import createAuthRefreshInterceptor from "axios-auth-refresh";
 const axiosInstance = axios.create();
 const refreshAuthLogic = (failedRequest) =>
   axios
-    .get("http://localhost:4000/token", { withCredentials: true })
+    .get("https://backend-sawerku.herokuapp.com/token", { withCredentials: true })
     .then((tokenRefreshResponse) => {
       console.log("Refreshed token: ", tokenRefreshResponse.data.token);
       localStorage.setItem("token", tokenRefreshResponse.data.token);
