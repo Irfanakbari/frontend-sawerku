@@ -1,13 +1,33 @@
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import Menu from "../../components/Menu";
-import { removeCookies,getCookie } from "cookies-next";
-
+import { removeCookies, getCookie } from "cookies-next";
+import axiosInstance from "../../helper/axios";
 
 const Admin = (props) => {
   const router = useRouter();
-  const logoutHandler = () => {
-    removeCookies("credentials");
+  const [username, setUsername] = useState("Anonymous");
+
+  useEffect(() => {
+    axiosInstance
+      .get("https://backend-sawerku.herokuapp.com/v1/user")
+      .then((res) => {
+        if (res.statusText === "OK") {
+          const { data } = res.data;
+          const username =
+            data.username.charAt(0).toUpperCase() + data.username.slice(1);
+          setUsername(username);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const logoutHandler = async () => {
+    localStorage.removeItem("token");
+    removeCookies("refreshToken");
     router.push("/login");
   };
   return (
@@ -18,7 +38,7 @@ const Admin = (props) => {
       <div className="flex items-center justify-center relative z-0">
         <div className="container w-11/12 border-4 border-black mt-5 mb-5 rounded-3xl text-center overflow-hidden">
           <div className="flex place-content-between font-patrick px-3 text-[30px] border-b-4 p-2 text-white text-left font-semibold border-black bg-[#BB6BD9]">
-            <div className="text-center">Halo, {props.username}</div>
+            <div className="text-center">Halo, {username}</div>
             <div className="text-right">
               <button
                 onClick={logoutHandler}
@@ -63,37 +83,5 @@ const Admin = (props) => {
     </>
   );
 };
-
-export async function getServerSideProps({ req,res }) {
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=10, stale-while-revalidate=59'
-  )
-  const credentials  = getCookie("credentials", { req, res });
-  const respon = await fetch("https://backend-sawerku.herokuapp.com/v1/user", {
-    method: "GET",
-    headers: {
-      authorization: `${credentials}`,
-    },
-  });
-  if (respon.statusText !== "OK") {
-    removeCookies("credentials", { req, res });
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-  const { data } = await respon.json();
-  // first word of username uppercase
-  const username =
-    data.username.charAt(0).toUpperCase() + data.username.slice(1);
-  return {
-    props: {
-      username: username,
-    }, // will be passed to the page component as props
-  };
-}
 
 export default Admin;

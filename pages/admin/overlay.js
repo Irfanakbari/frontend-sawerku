@@ -1,13 +1,25 @@
 import Navbar from "../../components/navbar";
 import Head from "next/head";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ALert from "../../components/alert/alert";
 import Subathon from "../../components/subathon/Subathon";
 import { removeCookies } from "cookies-next";
 import Barcode from "../../components/qrcode/Barcode";
+import axiosInstance from "../../helper/axios";
 
 const Overlay = (props) => {
   const [CurrentMenu, setCurrentMenu] = useState(0);
+  const [streamKey, setStreamKey] = useState("");
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    axiosInstance
+      .get("https://backend-sawerku.herokuapp.com/v1/user/streamkey")
+      .then((res) => {
+        setStreamKey(res.data.data.streamKey);
+        setUsername(res.data.username);
+      })
+      .catch((err) => {});
+  }, []);
 
   return (
     <>
@@ -18,19 +30,19 @@ const Overlay = (props) => {
         <div className="mt-5 mb-5 p-4  w-full">
           <div className="justify-center grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4  gap-3 ">
             <div
-              onClick={()=>setCurrentMenu(0)}
+              onClick={() => setCurrentMenu(0)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-white p-3 px-5 text-center"
             >
               Alert
             </div>
             <div
-              onClick={()=>setCurrentMenu(1)}
+              onClick={() => setCurrentMenu(1)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
               Subathon
             </div>
             <div
-              onClick={()=>setCurrentMenu(2)}
+              onClick={() => setCurrentMenu(2)}
               className="border-2 bg-[#8a90b6] hover:bg-[#8089c0] rounded-lg hover:cursor-pointer w-auto text-center text-white p-3 px-5"
             >
               QR Code
@@ -67,16 +79,14 @@ const Overlay = (props) => {
             </div> */}
           </div>
           <br />
-
         </div>
         {CurrentMenu === 0 ? (
-          <ALert keys={props.streamkey} baseurl={props.baseURL} />
+          <ALert keys={streamKey} baseurl={props.baseURL} />
         ) : CurrentMenu === 1 ? (
-          <Subathon keys={props.streamkey} baseurl={props.baseURL} />
+          <Subathon keys={streamKey} baseurl={props.baseURL} />
         ) : CurrentMenu === 2 ? (
-          <Barcode user={props.username} keys={props.streamkey} baseurl={props.baseURL} />
-        ) : null
-        }
+          <Barcode user={username} keys={streamKey} baseurl={props.baseURL} />
+        ) : null}
         <br />
       </Navbar>
     </>
@@ -84,32 +94,9 @@ const Overlay = (props) => {
 };
 
 export async function getServerSideProps({ req, res }) {
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=10, stale-while-revalidate=59"
-  );
-  const { credentials } = req.cookies;
-  const respon = await fetch("https://backend-sawerku.herokuapp.com/v1/user/streamkey", {
-    method: "GET",
-    headers: {
-      authorization: `${credentials}`,
-    },
-  });
-  if (respon.statusText !== "OK") {
-    removeCookies("credentials", { req, res });
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
-  const baseURL = process.env.BASE_URL
-  const { data, username } = await respon.json();
+  const baseURL = process.env.BASE_URL;
   return {
     props: {
-      streamkey: data.streamKey,
-      username: username,
       baseURL: baseURL,
     }, // will be passed to the page component as props
   };

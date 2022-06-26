@@ -1,22 +1,31 @@
 import Head from "next/head";
 import Router from "next/router";
-import { useState } from "react";
-import { setCookies, checkCookies } from "cookies-next";
-import { toast,ToastContainer } from 'react-toastify';
-
+import { useState, useEffect } from "react";
+import { setCookies, checkCookies, getCookie } from "cookies-next";
+import { toast, ToastContainer } from "react-toastify";
+import axios from "axios";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
-  const submitHandler = (e) => {
+
+  useEffect(() => {
+    const session = localStorage.getItem("token");
+    const refreshToken = getCookie("refreshToken");
+    if (session && refreshToken) {
+      Router.push("/admin");
+    }
+  }, []);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
-    postAPI("https://backend-sawerku.herokuapp.com/v1/auth/login", {
-      email: e.target.email.value,
-      password: e.target.password.value,
-    }).then((res) => {
-      if (res.status === "failed") {
-        setLoading(false);
-        toast.error(res.message, {
+    await axios
+      .post("https://backend-sawerku.herokuapp.com/v1/auth/login", {
+        email: e.target.email.value,
+        password: e.target.password.value,
+      })
+      .then((res) => {
+        toast.success(res.data.message, {
           position: "top-right",
           autoClose: 2000,
           theme: "colored",
@@ -25,33 +34,29 @@ const Login = () => {
           pauseOnHover: true,
           draggable: true,
         });
-      } else {
-        toast.success(res.message, {
-          position: "top-right",
-          autoClose: 2000,
-          theme: "colored",
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-        setCookies("credentials", res.data.token,{
-          // expires 1 hour from now
-          expires: new Date(Date.now() + 1000 * 60 * 60),
-        });
+        if (!checkCookies("refreshToken")) {
+          setCookies("refreshToken", res.data.data.rtoken, {
+            maxAge: 60 * 60 * 24 * 30,
+          });
+        }
+        // setCookies("token", res.data.data.token, {
+        //   maxAge: 60,
+        // });
+        localStorage.setItem("token", res.data.data.token);
         Router.push("/admin");
-      }
-    });
-  };
-  const postAPI = async (url, data) => {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    return response.json();
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error(err, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "colored",
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      });
   };
 
   return (
@@ -96,9 +101,7 @@ const Login = () => {
               </label>
               <br />
               <button className="bg-[#55A9B4] hover:bg-[#196b76] border-2 border-black text-white font-semibold font-zillaSlabMedium text-xl py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline">
-                {
-                  loading ? "Loading" : "Login"
-                }
+                {loading ? "Loading" : "Login"}
               </button>
             </form>
           </div>
@@ -107,21 +110,5 @@ const Login = () => {
     </>
   );
 };
-
-
-export async function getServerSideProps({ req, res }) {
-  const cooki = checkCookies("credentials", { req, res });
-  if (cooki) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/admin",
-      },
-    };
-  }
-  return {
-    props: {}, // will be passed to the page component as props
-  };
-}
 
 export default Login;
