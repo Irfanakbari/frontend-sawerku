@@ -1,7 +1,7 @@
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import Menu from "../../components/Menu";
+import Menu from "../../components/menu";
 import { removeCookies, getCookie } from "cookies-next";
 import axiosInstance from "../../helper/axios";
 

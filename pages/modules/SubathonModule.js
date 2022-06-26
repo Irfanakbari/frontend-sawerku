@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import TimerModule from "../../components/module/TimerModule";
+import TimerModule from "../../components/module/timer";
 
 export default function SubathonModule({props}) {
     const { key, bgcolor, txtcolor, jamawal, menitawal, detikawal, rules } = props;
