@@ -3,7 +3,7 @@ import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import ALert from "../../components/alert/alert";
 import Subathon from "../../components/subathon/subathon";
-import Barcode from "../../components/qrcode/barcode";
+import Barcode from "../../components/qrcode/barcode.js";
 import axiosInstance from "../../helper/axios";
 
 const Overlay = (props) => {
