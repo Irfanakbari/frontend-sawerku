@@ -3,7 +3,6 @@ import Head from "next/head";
 import React, { useState, useEffect } from "react";
 import ALert from "../../components/alert/alert";
 import Subathon from "../../components/subathon/Subathon";
-import { removeCookies } from "cookies-next";
 import Barcode from "../../components/qrcode/Barcode";
 import axiosInstance from "../../helper/axios";
 
