@@ -11,7 +11,7 @@ const Admin = (props) => {
 
   useEffect(() => {
     axiosInstance
-      .get("https://backend1.irfans.my.id//v1/user")
+      .get("https://backend1.irfans.my.id/v1/user")
       .then((res) => {
         if (res.statusText === "OK") {
           const { data } = res.data;

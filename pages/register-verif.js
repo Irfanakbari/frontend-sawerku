@@ -13,7 +13,7 @@ const Login = (props) => {
     const submitHandler = (e) => {
         e.preventDefault();
         setLoading(true);
-        postAPI("https://backend1.irfans.my.id//v1/auth/register", {
+        postAPI("https://backend1.irfans.my.id/v1/auth/register", {
             email: e.target.email.value,
             password: e.target.password.value,
             username: e.target.username.value,
