@@ -1,5 +1,6 @@
 import axios from "axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
+import { getCookie } from "cookies-next";
 
 const axiosInstance = axios.create();
 const refreshAuthLogic = (failedRequest) =>
