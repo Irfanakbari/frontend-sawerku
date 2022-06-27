@@ -12,11 +12,12 @@ const refreshAuthLogic = (failedRequest) =>
       },
     })
     .then((tokenRefreshResponse) => {
+      localStorage.removeItem("token");
       localStorage.setItem("token", tokenRefreshResponse.data.token);
       failedRequest.response.config.headers["Authorization"] =
         "Bearer " + tokenRefreshResponse.data.token;
       return Promise.resolve();
-    });
+    })
 
 createAuthRefreshInterceptor(axiosInstance, refreshAuthLogic);
 axiosInstance.interceptors.request.use((request) => {
