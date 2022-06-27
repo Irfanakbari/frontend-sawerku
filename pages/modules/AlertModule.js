@@ -9,7 +9,7 @@ export default function AlertModule() {
 
   const [queue, setQueue] = useState([]);
 
-  const socket = io("https://backend-sawerku.herokuapp.com/")
+  const socket = io("https://backend1.irfans.my.id//")
 
 
   useEffect(() => {

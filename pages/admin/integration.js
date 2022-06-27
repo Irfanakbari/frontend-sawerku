@@ -9,7 +9,7 @@ const Integration = (props) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     axiosInstance
-      .get("https://backend-sawerku.herokuapp.com/v1/user/webhook")
+      .get("https://backend1.irfans.my.id//v1/user/webhook")
       .then((res) => {
         setData(res.data.data);
       })
@@ -20,7 +20,7 @@ const Integration = (props) => {
     const url = e.target.url.value;
     const message = e.target.message.value;
     axiosInstance
-      .post("https://backend-sawerku.herokuapp.com/v1/user/webhook", {
+      .post("https://backend1.irfans.my.id//v1/user/webhook", {
         discord_url: url,
         discord_message: message,
       })
@@ -49,7 +49,7 @@ const Integration = (props) => {
     const url = e.target.url.value;
     const message = e.target.message.value;
     axiosInstance
-      .post("https://backend-sawerku.herokuapp.com/v1/user/webhook", {
+      .post("https://backend1.irfans.my.id//v1/user/webhook", {
         webhook_url: url,
         webhook_message: message,
       })

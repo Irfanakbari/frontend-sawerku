@@ -31,7 +31,7 @@ class ALert extends React.Component {
   }
 
    testAlert = async () => {
-    await fetch("https://backend-sawerku.herokuapp.com/v1/alert", {
+    await fetch("https://backend1.irfans.my.id//v1/alert", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

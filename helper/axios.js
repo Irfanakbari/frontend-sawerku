@@ -1,11 +1,15 @@
 import axios from "axios";
-import { getCookie, setCookies } from "cookies-next";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
 
 const axiosInstance = axios.create();
 const refreshAuthLogic = (failedRequest) =>
   axios
-    .get("https://backend-sawerku.herokuapp.com/token", { withCredentials: true })
+    .get("https://backend1.irfans.my.id/token", {
+      withCredentials: true,
+      headers: {
+        Cookie: "refreshToken=" + getCookie("refreshToken"),
+      },
+    })
     .then((tokenRefreshResponse) => {
       console.log("Refreshed token: ", tokenRefreshResponse.data.token);
       localStorage.setItem("token", tokenRefreshResponse.data.token);
@@ -24,4 +28,4 @@ axiosInstance.interceptors.request.use((request) => {
   return request;
 });
 
-export default axiosInstance
+export default axiosInstance;

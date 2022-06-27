@@ -12,7 +12,7 @@ const Overlay = (props) => {
   const [username, setUsername] = useState("");
   useEffect(() => {
     axiosInstance
-      .get("https://backend-sawerku.herokuapp.com/v1/user/streamkey")
+      .get("https://backend1.irfans.my.id//v1/user/streamkey")
       .then((res) => {
         setStreamKey(res.data.data.streamKey);
         setUsername(res.data.username);

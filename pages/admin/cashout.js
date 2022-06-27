@@ -10,14 +10,14 @@ const Cashout = (props) => {
   const [histori, setHistori] = useState([]);
   useEffect(() => {
     axiosInstance
-      .get("https://backend-sawerku.herokuapp.com/v1/user/saldo")
+      .get("https://backend1.irfans.my.id//v1/user/saldo")
       .then((res) => {
         setSaldo(res.data.data.saldo);
         setPayout(res.data.data.payoutSaldo);
       })
       .then(() => {
         axiosInstance
-          .get("https://backend-sawerku.herokuapp.com/v1/user/paymenthistory")
+          .get("https://backend1.irfans.my.id//v1/user/paymenthistory")
           .then((res) => {
             setHistori(res.data.data);
           })

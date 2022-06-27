@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     await axios
-      .post("https://backend-sawerku.herokuapp.com/v1/auth/login", {
+      .post("https://backend1.irfans.my.id//v1/auth/login", {
         email: e.target.email.value,
         password: e.target.password.value,
       })
