@@ -37,6 +37,8 @@ const Login = () => {
         if (!checkCookies("refreshToken")) {
           setCookies("refreshToken", res.data.data.rtoken, {
             maxAge: 60 * 60 * 24 * 30,
+            secure: true,
+            domain: "irfans.my.id",
           });
         }
         // setCookies("token", res.data.data.token, {
