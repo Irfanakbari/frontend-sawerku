@@ -12,7 +12,6 @@ const refreshAuthLogic = (failedRequest) =>
       },
     })
     .then((tokenRefreshResponse) => {
-      console.log("Refreshed token: ", tokenRefreshResponse.data.token);
       localStorage.setItem("token", tokenRefreshResponse.data.token);
       failedRequest.response.config.headers["Authorization"] =
         "Bearer " + tokenRefreshResponse.data.token;
