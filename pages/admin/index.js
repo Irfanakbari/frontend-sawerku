@@ -20,8 +20,6 @@ const Admin = (props) => {
           setUsername(username);
         }
       })
-      .catch((err) => {
-      });
   }, []);
 
   const logoutHandler = async () => {
