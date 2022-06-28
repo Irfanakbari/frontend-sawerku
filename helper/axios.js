@@ -5,7 +5,7 @@ import { getCookie } from "cookies-next";
 const axiosInstance = axios.create();
 const refreshAuthLogic = (failedRequest) =>
   axios
-    .get("https://backend1.irfans.my.id/token", {
+    .get("https://backend1.irfans.me/token", {
       withCredentials: true,
       headers: {
         Cookie: "refreshToken=" + getCookie("refreshToken"),

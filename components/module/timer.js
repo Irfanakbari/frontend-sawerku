@@ -13,7 +13,7 @@ class TimerModule extends React.Component {
       isEdit: false,
     };
     this.countdown = 0;
-    this.socket = io("https://backend1.irfans.my.id/");
+    this.socket = io("https://backend1.irfans.me/");
     this.socket.on("subathon" + this.props.keys, (data) => {
       this.addTime(data.nominal);
     });

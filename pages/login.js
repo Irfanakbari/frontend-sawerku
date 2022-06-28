@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     await axios
-      .post("https://backend1.irfans.my.id/v1/auth/login", {
+      .post("https://backend1.irfans.me/v1/auth/login", {
         email: e.target.email.value,
         password: e.target.password.value,
       })
@@ -39,7 +39,7 @@ const Login = () => {
             maxAge: 60 * 60 * 24 * 30,
             secure: true,
             sameSite: "None",
-            domain: "irfans.my.id",
+            domain: "irfans.me",
           });
         }
         // setCookies("token", res.data.data.token, {

@@ -9,11 +9,11 @@ const Login = (props) => {
     const [loading, setLoading] = useState(false);
     const [password, setPassword] = useState("");
     const [isUsername, setIsUsername] = useState(false);
-    const socket = io("https://backend1.irfans.my.id/");
+    const socket = io("https://backend1.irfans.me/");
     const submitHandler = (e) => {
         e.preventDefault();
         setLoading(true);
-        postAPI("https://backend1.irfans.my.id/v1/auth/register", {
+        postAPI("https://backend1.irfans.me/v1/auth/register", {
             email: e.target.email.value,
             password: e.target.password.value,
             username: e.target.username.value,
