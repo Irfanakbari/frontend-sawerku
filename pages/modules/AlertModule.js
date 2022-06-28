@@ -9,7 +9,8 @@ export default function AlertModule() {
 
   const [queue, setQueue] = useState([]);
 
-  const socket = io("https://backend1.irfans.me")
+  const socket = io("http://backend1.irfans.me",{
+  })
 
 
   useEffect(() => {
