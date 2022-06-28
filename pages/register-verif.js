@@ -10,27 +10,25 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [isUsername, setIsUsername] = useState(false);
   const socket = io("https://backend1.irfans.me/");
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
-    postAPI("https://backend1.irfans.me/v1/auth/register", {
-      email: e.target.email.value,
-      password: e.target.password.value,
-      username: e.target.username.value,
-      key: props.keys,
-    }).then((res) => {
-      if (res.status === "failed") {
-        setLoading(false);
-        toast.error(res.message, {
-          position: "top-right",
-          autoClose: 2000,
-          theme: "colored",
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      } else {
+    await axios
+      .post(
+        "https://backend1.irfans.me/v1/auth/register",
+        {
+          email: e.target.email.value,
+          password: e.target.password.value,
+          username: e.target.username.value,
+          key: props.keys,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
         setLoading(false);
         toast.success(res.message, {
           position: "top-right",
@@ -44,22 +42,19 @@ const Login = (props) => {
         setTimeout(() => {
           Router.push("/login");
         }, 2000);
-      }
-    });
-  };
-  const postAPI = async (url, data) => {
-    const response = await axios.post(
-      url,
-      {
-        data,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return response.data
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error(res, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "colored",
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      });
   };
   const passwordHandler = (e) => {
     setPassword(e.target.value);

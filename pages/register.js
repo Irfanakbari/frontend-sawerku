@@ -5,24 +5,20 @@ import { toast, ToastContainer } from "react-toastify";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
-  const submitHandler = (e) => {
+  const submitHandler =async (e) => {
     e.preventDefault();
     setLoading(true);
-    postAPI("https://backend1.irfans.me/v1/email", {
-      email: e.target.email.value,
-    }).then((res) => {
-      if (res.status === "failed") {
-        setLoading(false);
-        toast.error(res.message, {
-          position: "top-right",
-          autoClose: 2000,
-          theme: "colored",
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
-      } else {
+    await axios.post(
+        "https://backend1.irfans.me/v1/email",
+        {
+            email: e.target.email.value,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((res) => {
         toast.success("Silahkan Cek Email Aktivasi Anda", {
           position: "top-right",
           autoClose: 2000,
@@ -33,24 +29,20 @@ const Register = () => {
           draggable: true,
         });
         setLoading(false);
-      }
-    });
-  };
-  const postAPI = async (url, data) => {
-    const response = await axios.post(
-      url,
-      {
-        data,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+    }).catch((err) => {
+        setLoading(false);
+        toast.error(err, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "colored",
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+    }
     );
-    return response.data
   };
-
   return (
     <>
       <Head>

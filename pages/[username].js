@@ -79,46 +79,46 @@ const Sawer = (props) => {
     }
 
     if (e == "qris") {
-      const respon = await axios.post(
-        "https://backend1.irfans.me/v1/payments/xendit/qr/" + props.username,
-        {
-          email: sawer.email,
-          nominal: parseInt(nominal),
-          from: sawer.dari,
-          pesan: sawer.pesan,
-          metode: e,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
+      try {
+        const respon = await axios.post(
+          "https://backend1.irfans.me/v1/payments/xendit/qr/" + props.username,
+          {
+            email: sawer.email,
+            nominal: parseInt(nominal),
+            from: sawer.dari,
+            pesan: sawer.pesan,
+            metode: e,
           },
-        }
-      );
-      const datas = await respon.data
-      if (datas.status === "success") {
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const datas = await respon.data;
         const { external_id } = datas.data;
         router.push("/qris/" + external_id);
-      } else {
+      } catch (error) {
         toast.error("Gagal membuat Pembayaran");
       }
     } else {
-      const respon = await axios.post(
-        "https://backend1.irfans.me/v1/payments/xendit/" + props.username,
-        {
-          email: sawer.email,
-          nominal: parseInt(nominal),
-          from: sawer.dari,
-          pesan: sawer.pesan,
-          metode: e,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
+      try {
+        const respon = await axios.post(
+          "https://backend1.irfans.me/v1/payments/xendit/" + props.username,
+          {
+            email: sawer.email,
+            nominal: parseInt(nominal),
+            from: sawer.dari,
+            pesan: sawer.pesan,
+            metode: e,
           },
-        }
-      );
-      const { data, status } = await respon.data
-      if (status === "success") {
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        const { data, status } = await respon.data;
         if (isMobile) {
           const { actions } = data;
           router.push(actions.mobile_web_checkout_url);
@@ -130,7 +130,7 @@ const Sawer = (props) => {
             router.push(actions.mobile_deeplink_checkout_url);
           }
         }
-      } else {
+      } catch (error) {
         toast.error("Gagal membuat Pembayaran");
       }
     }
