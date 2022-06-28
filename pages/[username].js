@@ -24,7 +24,7 @@ const Sawer = (props) => {
       .catch((err) => {
         setErrorCode(err.response.status);
       });
-  }, []);
+  }, [router.query.username]);
 
   function formatRupiah(angka, prefix) {
     let number_string = angka.replace(/[^,\d]/g, "").toString(),
