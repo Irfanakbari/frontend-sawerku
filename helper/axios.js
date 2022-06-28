@@ -7,9 +7,9 @@ const refreshAuthLogic = (failedRequest) =>
   axios
     .get("https://backend1.irfans.me/token", {
       withCredentials: true,
-      headers: {
-        Cookie: "refreshToken=" + getCookie("refreshToken"),
-      },
+      // headers: {
+      //   Cookie: "refreshToken=" + getCookie("refreshToken"),
+      // },
     })
     .then((tokenRefreshResponse) => {
       localStorage.removeItem("token");
