@@ -316,10 +316,11 @@ const Sawer = (props) => {
 
 export async function getServerSideProps(req) {
   const { username } = req.query;
-  const res = await axios.get(
-    "https://backend1.irfans.me/v1/users/" + username
-  );
-  const errorCode = (res.status == 200) ? false : res.status;
+  const errorCode = 200
+//   const res = await axios.get(
+//     "https://backend1.irfans.me/v1/users/" + username
+//   );
+//   const errorCode = (res.status == 200) ? false : res.status;
 
   return {
     props: {
