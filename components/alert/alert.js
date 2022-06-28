@@ -39,14 +39,17 @@ class ALert extends React.Component {
           pesan: "Semangat Ya",
           streamKey: this.props.keys,
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
       )
       .then((res) => {
-        console.log(res.json());
+        toast.success("Berhasil Kirim Pesan", {
+          position: "top-right",
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          className: "toast-success",
+        });
       });
   };
 
