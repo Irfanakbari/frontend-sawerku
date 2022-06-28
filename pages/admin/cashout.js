@@ -23,6 +23,7 @@ const Cashout = (props) => {
           })
           .catch((err) => {});
       })
+      .catch((err) => {})
       .catch((err) => {});
   }, []);
   const columns = [

@@ -17,7 +17,9 @@ const Overlay = (props) => {
         setStreamKey(res.data.data.streamKey);
         setUsername(res.data.username);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
