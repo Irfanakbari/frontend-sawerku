@@ -9,7 +9,7 @@ export default function AlertModule() {
 
   const [queue, setQueue] = useState([]);
 
-  const socket = io("https://backend1.irfans.me/")
+  const socket = io("https://backend1.irfans.me")
 
 
   useEffect(() => {
@@ -32,7 +32,6 @@ export default function AlertModule() {
   }, durasinotif);
     function timeout() {
       setTimeout(() => {
-        console.log("timeout");
         document.getElementById("body").style.display = "none";
       }, durasinotif);
     }
