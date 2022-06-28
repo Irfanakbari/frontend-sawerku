@@ -9,7 +9,7 @@ const Login = (props) => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [isUsername, setIsUsername] = useState(false);
-  const socket = io("http://backend1.irfans.me/");
+  const socket = io("https://backend1.irfans.me/");
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
