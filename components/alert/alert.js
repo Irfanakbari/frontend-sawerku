@@ -1,6 +1,6 @@
+import axios from "axios";
 import React from "react";
-import { toast, ToastContainer } from 'react-toastify';
-
+import { toast, ToastContainer } from "react-toastify";
 
 class ALert extends React.Component {
   constructor(props) {
@@ -19,7 +19,6 @@ class ALert extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-
   async handleInputChange(event) {
     const target = event.target;
     let value = target.type === "checkbox" ? target.checked : target.value;
@@ -30,22 +29,26 @@ class ALert extends React.Component {
     });
   }
 
-   testAlert = async () => {
-    await fetch("https://backend1.irfans.me/v1/alert", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        dari: "admin",
-        gross: this.state.mindonasi,
-        pesan: "Semangat Ya",
-        streamKey: this.props.keys
-      }),
-    }).then((res) => {
-      console.log(res.json());
-    });
-  }
+  testAlert = async () => {
+    await axios
+      .post(
+        "https://backend1.irfans.me/v1/alert",
+        {
+          dari: "admin",
+          gross: this.state.mindonasi,
+          pesan: "Semangat Ya",
+          streamKey: this.props.keys,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.json());
+      });
+  };
 
   componentDidMount() {
     const data = localStorage.getItem("alert");
@@ -285,7 +288,29 @@ class ALert extends React.Component {
               type="text"
               className="w-full py-2  border-b-[1px] font-zillaSlabLight border-black focus:outline-none"
               disabled
-              value={this.props.baseurl + "modules/AlertModule?key=" + this.props.keys + "&mindonasi=" + this.state.mindonasi + "&mintts=" + this.state.mintts + "&mingif=" + this.state.mingif + "&durasinotif=" + this.state.durasinotif + "&bgcolor=" + this.state.bgcolor + "&hgcolor=" + this.state.hgcolor + "&txtcolor=" + this.state.txtcolor + "&fontweight=" + this.state.fontweight + "&template=" + this.state.template}
+              value={
+                this.props.baseurl +
+                "modules/AlertModule?key=" +
+                this.props.keys +
+                "&mindonasi=" +
+                this.state.mindonasi +
+                "&mintts=" +
+                this.state.mintts +
+                "&mingif=" +
+                this.state.mingif +
+                "&durasinotif=" +
+                this.state.durasinotif +
+                "&bgcolor=" +
+                this.state.bgcolor +
+                "&hgcolor=" +
+                this.state.hgcolor +
+                "&txtcolor=" +
+                this.state.txtcolor +
+                "&fontweight=" +
+                this.state.fontweight +
+                "&template=" +
+                this.state.template
+              }
             />
           </div>
           <div className="w-full px-4 text-left block mb-4">
