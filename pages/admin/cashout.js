@@ -9,23 +9,10 @@ const Cashout = (props) => {
   const [payout, setPayout] = useState(0);
   const [histori, setHistori] = useState([]);
   useEffect(() => {
-    axiosInstance
-      .get("https://backend1.irfans.me/v1/user/saldo")
-      .then((res) => {
-        setSaldo(res.data.data.saldo);
-        setPayout(res.data.data.payoutSaldo);
-      })
-      .then(() => {
-        axiosInstance
-          .get("https://backend1.irfans.me/v1/user/paymenthistory")
-          .then((res) => {
-            setHistori(res.data.data);
-          })
-          .catch((err) => {});
-      })
-      .catch((err) => {})
-      .catch((err) => {});
-  }, []);
+    setSaldo(props.saldo);
+    setPayout(props.payout);
+    setHistori(props.histori);
+  }, [props]);
   const columns = [
     {
       name: "Tanggal",
@@ -109,6 +96,49 @@ function intToRupiah(angka) {
       .join("") +
     ",-"
   );
+}
+
+export async function getServerSideProps(context) {
+  let saldo = 0;
+  let payout = 0;
+  let histori = [];
+  axiosInstance
+    .get("https://backend1.irfans.me/v1/user/saldo")
+    .then((res) => {
+      saldo = res.data.data.saldo;
+      payout = res.data.data.payoutSaldo;
+    })
+    .catch((err) => {
+      if (err.response.status === 401) {
+        context.res.writeHead(302, {
+          Location: "/login",
+        });
+        context.res.end();
+      }
+    })
+    .then(() => {
+      axiosInstance
+        .get("https://backend1.irfans.me/v1/user/paymenthistory")
+        .then((res) => {
+          histori = res.data.data;
+        })
+        .catch((err) => {});
+    })
+    .catch((err) => {
+      if (err.response.status === 401) {
+        context.res.writeHead(302, {
+          Location: "/login",
+        });
+        context.res.end();
+      }
+    });
+  return {
+    props: {
+      saldo,
+      payout,
+      histori,
+    },
+  };
 }
 
 export default Cashout;

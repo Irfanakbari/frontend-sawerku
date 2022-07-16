@@ -10,20 +10,10 @@ const Admin = (props) => {
   const [username, setUsername] = useState("Anonymous");
 
   useEffect(() => {
-    try {
-      axiosInstance.get("https://backend1.irfans.me/v1/user").then((res) => {
-        const { data } = res.data;
-        const username =
-          data.username.charAt(0).toUpperCase() + data.username.slice(1);
-        setUsername(username);
-      });
-    } catch (error) {
-      console.log("error", error);
-    }
-  }, []);
+    setUsername(props.username);
+  }, [props]);
 
   const logoutHandler = async () => {
-    // localStorage.removeItem("token");
     removeCookies("token");
     router.push("/login");
   };
@@ -80,5 +70,29 @@ const Admin = (props) => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  let username = "";
+  try {
+    axiosInstance.get("https://backend1.irfans.me/v1/user").then((res) => {
+      const { data } = res.data;
+      const temp =
+        data.username.charAt(0).toUpperCase() + data.username.slice(1);
+      username = temp;
+    });
+  } catch (error) {
+    if (error.response.status === 401) {
+      context.res.writeHead(302, { Location: "/login" });
+      context.res.end();
+    } else {
+      console.log(error);
+    }
+  }
+  return {
+    props: {
+      username: username,
+    },
+  };
+}
 
 export default Admin;
