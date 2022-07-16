@@ -13,12 +13,12 @@ const Overlay = (props) => {
   useEffect(() => {
     axiosInstance
       .get("https://backend1.irfans.me/v1/user/streamkey")
+      .catch((err) => {
+        console.log("error", err);
+      })
       .then((res) => {
         setStreamKey(res.data.data.streamKey);
         setUsername(res.data.username);
-      })
-      .catch((err) => {
-        console.log(err);
       });
   }, []);
 

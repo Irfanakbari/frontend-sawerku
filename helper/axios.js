@@ -32,19 +32,5 @@ axiosInstance.interceptors.request.use((request) => {
   return request;
 });
 
-axiosInstance.interceptors.response.use(
-  (response) => {
-    if (response.status === 200) {
-      return response;
-    }
-    return Promise.reject(response);
-  },
-  (error) => {
-    if (error.response.status === 401) {
-      return Promise.reject(error);
-    }
-    return Promise.reject(error);
-  }
-);
 
 export default axiosInstance;
