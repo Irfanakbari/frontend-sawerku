@@ -1,5 +1,6 @@
 import axios from "axios";
 import createAuthRefreshInterceptor from "axios-auth-refresh";
+import { getCookie, removeCookies } from "cookies-next";
 
 const axiosInstance = axios.create();
 const refreshAuthLogic = (failedRequest) =>
@@ -16,7 +17,8 @@ const refreshAuthLogic = (failedRequest) =>
       failedRequest.response.config.headers["Authorization"] =
         "Bearer " + tokenRefreshResponse.data.token;
       return Promise.resolve();
-    }).catch((err) => {
+    })
+    .catch((err) => {
       removeCookies("refreshToken");
       localStorage.removeItem("token");
       return Promise.reject(err);
@@ -31,6 +33,5 @@ axiosInstance.interceptors.request.use((request) => {
   }
   return request;
 });
-
 
 export default axiosInstance;
