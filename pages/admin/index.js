@@ -78,7 +78,6 @@ export async function getServerSideProps(context) {
     .then((res) => {
       const { data } = res.data;
       username = data.username.charAt(0).toUpperCase() + data.username.slice(1);
-      username = temp;
     })
     .catch((err) => {
       if (err.response.status === 401) {
