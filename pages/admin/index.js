@@ -78,10 +78,7 @@ export async function getServerSideProps(context) {
     const { data } = res.data;
     username = data.username.charAt(0).toUpperCase() + data.username.slice(1);
   } catch (error) {
-    if (error.response.status === 401) {
-      context.res.writeHead(302, { Location: "/login" });
-      context.res.end();
-    }
+    console.log(error);
   }
   return {
     props: {
