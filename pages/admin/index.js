@@ -73,21 +73,21 @@ const Admin = (props) => {
 
 export async function getServerSideProps(context) {
   let username = "";
-  try {
-    axiosInstance.get("https://backend1.irfans.me/v1/user").then((res) => {
+  await axiosInstance
+    .get("https://backend1.irfans.me/v1/user")
+    .then((res) => {
       const { data } = res.data;
-      const temp =
-        data.username.charAt(0).toUpperCase() + data.username.slice(1);
+      username = data.username.charAt(0).toUpperCase() + data.username.slice(1);
       username = temp;
+    })
+    .catch((err) => {
+      if (err.response.status === 401) {
+        context.res.writeHead(302, { Location: "/login" });
+        context.res.end();
+      } else {
+        console.log(err);
+      }
     });
-  } catch (error) {
-    if (error.response.status === 401) {
-      context.res.writeHead(302, { Location: "/login" });
-      context.res.end();
-    } else {
-      console.log(error);
-    }
-  }
   return {
     props: {
       username: username,
