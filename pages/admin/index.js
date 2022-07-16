@@ -23,8 +23,8 @@ const Admin = (props) => {
   }, []);
 
   const logoutHandler = async () => {
-    localStorage.removeItem("token");
-    removeCookies("refreshToken");
+    // localStorage.removeItem("token");
+    removeCookies("token");
     router.push("/login");
   };
   return (

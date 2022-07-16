@@ -9,9 +9,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const session = localStorage.getItem("token");
-    const refreshToken = getCookie("refreshToken");
-    if (session && refreshToken) {
+    const token = getCookie("token");
+    if (token) {
       Router.push("/admin");
     }
   }, []);
@@ -34,18 +33,15 @@ const Login = () => {
           pauseOnHover: true,
           draggable: true,
         });
-        if (!checkCookies("refreshToken")) {
-          setCookies("refreshToken", res.data.data.rtoken, {
-            maxAge: 60 * 60 * 24 * 30,
+        if (!checkCookies("token")) {
+          setCookies("token", res.data.data.token, {
+            // 10 days
+            maxAge: 10 * 24 * 60 * 60,
             secure: true,
             sameSite: "None",
             domain: "irfans.me",
           });
         }
-        // setCookies("token", res.data.data.token, {
-        //   maxAge: 60,
-        // });
-        localStorage.setItem("token", res.data.data.token);
         Router.push("/admin");
       })
       .catch((err) => {

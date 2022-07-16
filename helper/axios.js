@@ -11,8 +11,8 @@ const refreshAuthLogic = (failedRequest) =>
       // },
     })
     .then((tokenRefreshResponse) => {
-      localStorage.removeItem("token");
-      localStorage.setItem("token", tokenRefreshResponse.data.token);
+      // localStorage.removeItem("token");
+      // localStorage.setItem("token", tokenRefreshResponse.data.token);
       failedRequest.response.config.headers["Authorization"] =
         "Bearer " + tokenRefreshResponse.data.token;
       return Promise.resolve();
@@ -22,10 +22,10 @@ const refreshAuthLogic = (failedRequest) =>
       return Promise.reject(err);
     });
 
-createAuthRefreshInterceptor(axiosInstance, refreshAuthLogic);
+// createAuthRefreshInterceptor(axiosInstance, refreshAuthLogic);
 axiosInstance.interceptors.request.use((request) => {
-  // const token = getCookie("token");
-  const token = localStorage.getItem("token");
+  const token = getCookie("token");
+  // const token = localStorage.getItem("token");
   if (token) {
     request.headers["Authorization"] = "Bearer " + token;
   }
