@@ -10,18 +10,16 @@ const Admin = (props) => {
   const [username, setUsername] = useState("Anonymous");
 
   useEffect(() => {
-    axiosInstance
-      .get("https://backend1.irfans.me/v1/user")
-      .then((res) => {
-        if (res.statusText === "OK") {
-          const { data } = res.data;
-          const username =
-            data.username.charAt(0).toUpperCase() + data.username.slice(1);
-          setUsername(username);
-        }
-      }).catch((err) => {
-        console.log("failed to get user data");
+    try {
+      axiosInstance.get("https://backend1.irfans.me/v1/user").then((res) => {
+        const { data } = res.data;
+        const username =
+          data.username.charAt(0).toUpperCase() + data.username.slice(1);
+        setUsername(username);
       });
+    } catch (error) {
+      console.log("error", error);
+    }
   }, []);
 
   const logoutHandler = async () => {
