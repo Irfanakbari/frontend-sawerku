@@ -16,6 +16,10 @@ const refreshAuthLogic = (failedRequest) =>
       failedRequest.response.config.headers["Authorization"] =
         "Bearer " + tokenRefreshResponse.data.token;
       return Promise.resolve();
+    }).catch((err) => {
+      removeCookies("refreshToken");
+      localStorage.removeItem("token");
+      return Promise.reject(err);
     });
 
 createAuthRefreshInterceptor(axiosInstance, refreshAuthLogic);

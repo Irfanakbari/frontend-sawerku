@@ -19,7 +19,9 @@ const Admin = (props) => {
             data.username.charAt(0).toUpperCase() + data.username.slice(1);
           setUsername(username);
         }
-      })
+      }).catch((err) => {
+        console.log("failed to get user data");
+      });
   }, []);
 
   const logoutHandler = async () => {
